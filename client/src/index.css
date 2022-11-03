@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        font-family: 'SF Pro Text', system-ui, sans-serif;
+        overflow: hidden;
+    }
+
+    ::-webkit-scrollbar {
+        width: 9px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: rgba(56, 56, 58, .12);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #fff;
+        border: 2px solid rgba(56, 56, 58, .18);
+        border-radius: 10px;
+    }
+
+    .scrollbar-gutter {
+        scrollbar-gutter: stable;
+    }
+
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+    .text-truncate-1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+    .text-truncate-2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
