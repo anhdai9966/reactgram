@@ -1,6 +1,6 @@
 import images from "~/assets/images";
-import { IconVerified } from "~/components/Icons";
-import HasFooterLayout from "~/layouts/HasFooterLayout";
+import { IconVerified } from "~/components/UI/Icons";
+import HasFooterLayout from "~/layouts/FooterLayout";
 import user from "~/assets/json/junvu95.json";
 import { numberFormater } from "~/services";
 import { Link } from "react-router-dom";

@@ -1,17 +1,11 @@
-import { Route, Routes } from "react-router-dom";
-import DefaultLayout from "~/layouts/DefaultLayout";
-import PageHome from "~/pages/Home";
-import PageUser from "~/pages/User";
-import PageSignin from "~/pages/Signin";
-import PageSuggestionsForYou from "~/pages/SuggestionsForYou";
+import { useLayoutEffect } from "react";
+import { useRoutes } from "react-router-dom";
 import {
   useWindowSize,
   useScrollbarWidth,
   useCreateValiableCSS,
 } from "~/hooks";
-import { useEffect } from "react";
-import PrivateRoutes from "./components/private/PrivateRoutes";
-import { privateRoutes } from "./routes";
+import routes from "~/routes";
 
 function App() {
   const windowSize = useWindowSize();
@@ -20,23 +14,16 @@ function App() {
   const scrollbarWidth = useScrollbarWidth();
   useCreateValiableCSS("--scrollbar-width", `${scrollbarWidth}px`);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const doc = document.documentElement;
     doc.setAttribute("dir", "ltr");
   }, []);
 
-  return (
-    <Routes>
-      <Route path="/signin" element={<PageSignin />} />
-      
-      <Route element={<PrivateRoutes />}>
-        {privateRoutes.map((route, index) => {
-          const Page = route.component;
-          return <Route key={index} path={route.path} element={<Page />} />;
-        })}
-      </Route>
-    </Routes>
-  );
+  const isLoggedIn = true;
+
+  const routing = useRoutes(routes(isLoggedIn));
+
+  return routing;
 }
 
 export default App;
