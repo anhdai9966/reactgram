@@ -1,6 +1,6 @@
 import images from "~/assets/images";
 import { IconCommentFill, IconHeartFill } from "~/components/UI/Icons";
-import { numberFormater } from "~/services";
+import { numberFormater } from "~/utils";
 
 function Grid() {
   return (

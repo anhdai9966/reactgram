@@ -8,35 +8,43 @@ import Thread from "./components/Thread";
 
 import { useDocumentTitle, useOnClickOutside } from "~/hooks";
 import Footer from "~/components/Footer";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { setHiddenAllModalHome } from "./HomeSlice";
 import ModalLayout from "~/layouts/ModalLayout";
-import { setModalLogin } from "~/app/appSlice";
+import { setShowLoginModal } from "~/app/appSlice";
 
-function PageHome() {
+
+function HomePage() {
   useDocumentTitle("Reactgram");
 
   const { isToggleModalMenuThread, isToggleModalDetailThead } = useSelector(
     (state) => state.pageHome
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const isShowModal = isToggleModalMenuThread || isToggleModalDetailThead;
   const isShowBtnModal = isToggleModalDetailThead;
 
   const modalRef = useOnClickOutside(() => {
     dispatch(setHiddenAllModalHome());
+    navigate("/app");
   });
 
   const handleClickBtnSwitchAccount = () => {
-    dispatch(setModalLogin(true));
+    dispatch(setShowLoginModal(true));
   };
 
   return (
     <div className="flex gap-8 justify-center flex-col lg:flex-row py-6">
-      <ModalLayout ref={modalRef} isShow={isShowModal} isShowBtn={isShowBtnModal}>
+      <ModalLayout
+        ref={modalRef}
+        isShow={isShowModal}
+        isShowBtn={isShowBtnModal}
+      >
         {isToggleModalDetailThead && <ModalCommentThread />}
         {isToggleModalMenuThread && <ModalMenuThread />}
+        <Outlet />
       </ModalLayout>
 
       <div className="w-full sm:w-[470px]">
@@ -135,4 +143,4 @@ function PageHome() {
   );
 }
 
-export default PageHome;
+export default HomePage;

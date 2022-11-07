@@ -1,10 +1,14 @@
+import { useDispatch } from "react-redux";
 import { useLockedBody } from "~/hooks";
+import { setIsShowClearAllRecentModal } from "~/components/Header/HeaderSlice";
 
-function ClearAllRecent({ toggle }) {
+function ClearAllRecent() {
   useLockedBody(true);
 
+  const dispatch = useDispatch();
+
   const handleClickCancel = () => {
-    toggle();
+    dispatch(setIsShowClearAllRecentModal(false))
   };
 
   const handleDeleteAllRecent = () => {

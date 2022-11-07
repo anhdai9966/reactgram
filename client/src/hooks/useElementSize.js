@@ -27,6 +27,7 @@ function useElementSize() {
     handleResize();
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref?.current]); // Empty array ensures that effect is only run on mount
   return [size, ref];
 }

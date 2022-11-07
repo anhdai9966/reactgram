@@ -50,6 +50,7 @@ function useLockedBody(
         document.body.style.paddingRight = originalPaddingRight;
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locked]);
 
   // Update state if initialValue changes

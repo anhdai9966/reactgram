@@ -1,15 +1,16 @@
-import { memo, useCallback } from "react";
+import { useCallback } from "react";
 import emojiData from "~/assets/data/emoji";
 
 function Emoji({ setFalse }) {
   const handleClickEmoji = useCallback((emoji) => {
     console.log(emoji);
     setFalse();
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="bg-white border rounded-lg shadow-2xl py-3">
-      <div className="w-[330px] h-[330px] overflow-y-auto">
+    <div className="bg-white border rounded-lg shadow-2xl py-3 w-full h-full">
+      <div className="w-full h-full overflow-y-auto">
         <h5 className="font-semibold text-[#767680]/60 border-b py-2 px-5">
           Smileys & Emotion
         </h5>
@@ -28,4 +29,4 @@ function Emoji({ setFalse }) {
   );
 }
 
-export default memo(Emoji);
+export default Emoji;

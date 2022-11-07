@@ -3,9 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   useBoolean,
-  useCreateValiableCSS,
-  useElementSize,
-  useLocationChage,
+  useLocationChange,
   useMediaQuery,
   useOnClickOutside,
   usePathName,
@@ -13,14 +11,14 @@ import {
 import {
   Icon3Line,
   Icon3LineFill,
-  IconFindPeople,
-  IconFindPeopleFill,
-  IconHeart,
-  IconHeartFill,
+  IconBell,
+  IconBellFill,
   IconHouse,
   IconHouseFill,
-  IconMessenger,
-  IconMessengerFill,
+  IconLocationCircle,
+  IconLocationFill,
+  IconMessage,
+  IconMessageFill,
   IconPlusCircle,
   IconPlusCircleFill,
   IconProfile,
@@ -31,22 +29,18 @@ import {
 } from "~/components/UI/Icons";
 import { LogoReactgram } from "~/components/UI/Logos";
 import ModalLayout from "~/layouts/ModalLayout";
-import { ModalClearAllRecent, ModalPostMedia } from "./components/Modals";
-import DropMenuProfile from "./components/DropMenuProfile";
-import { DropNotification, DropSearch } from "./components/Drops";
+import { ModalClearAllRecent, PostMediaModal } from "./components/Modals";
+import { NotificationDrop, SearchDrop, MenuDrop } from "./components/Drops";
 import NavigationItem from "./components/NavigationItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsShowClearAllRecentModal } from "./HeaderSlice";
+import DropLayout from "~/layouts/DropLayout";
+import { useEffect } from "react";
 
 function Header() {
   const navigate = useNavigate();
-
-  const [headerSize, headerRef] = useElementSize();
-  useCreateValiableCSS("--header-width", `${headerSize.width}px`);
-
-  const {
-    state: isShownModalClearAllRecent,
-    setTrue: shownModalClearAllRecent,
-    setFalse: closeModalClearAllRecent,
-  } = useBoolean();
+  const { isShowClearAllRecentModal } = useSelector((state) => state.header);
+  const dispatch = useDispatch();
 
   const {
     state: isShownModalPostMedia,
@@ -74,15 +68,30 @@ function Header() {
 
   const pathname = usePathName();
 
-  const matchesSideBar = useMediaQuery("(min-width: 1280px)");
+  const matchesSideBar = useMediaQuery("min-width: 1280px");
 
-  const isOpenDrop = isOpenDropSearch || isOpenDropNotification;
-  const isShowModal = isShownModalPostMedia || isShownModalClearAllRecent;
-  const isShowBtnCloseModal = isShownModalPostMedia;
+  const [isShow, setIsShow] = useState({
+    dropSidebar: false,
+    modal: false,
+    btnCloseModal: false,
+  });
+
+  useEffect(() => {
+    setIsShow({
+      dropSidebar: isOpenDropSearch || isOpenDropNotification,
+      modal: isShownModalPostMedia || isShowClearAllRecentModal,
+      btnCloseModal: isShownModalPostMedia,
+    });
+  }, [
+    isOpenDropSearch,
+    isOpenDropNotification,
+    isShownModalPostMedia,
+    isShowClearAllRecentModal,
+  ]);
 
   const getIdNavigation = (pathname) => {
     const navCurrent = navList.find((nav) => nav?.to === pathname);
-    return navCurrent.id;
+    return navCurrent?.id || null;
   };
 
   const handleActiveNavigation = (id) => {
@@ -98,23 +107,20 @@ function Header() {
 
   const modalRef = useOnClickOutside(() => {
     closeModalPostMedia();
-    closeModalClearAllRecent();
+    dispatch(setIsShowClearAllRecentModal(false));
     handleActiveNavigation(getIdNavigation(pathname));
   });
 
-  const dropMenuProfileRef = useOnClickOutside(() => {
+  const headerRef = useOnClickOutside(() => {
+    if (!isShowClearAllRecentModal) {
+      closeDropSearch();
+    }
+    closeDropNotification();
     closeDropMenuProfile();
     handleActiveNavigation(getIdNavigation(pathname));
   });
 
-  // const sideBarRef = useOnClickOutside(() => {
-  //   if (!isShownModalClearAllRecent) {
-  //     closeSideBar();
-  //     handleActiveNavigation(getIdNavigation(pathname));
-  //   }
-  // });
-
-  useLocationChage(() => {
+  useLocationChange(() => {
     closeDropMenuProfile();
     closeDropSearch();
   });
@@ -128,9 +134,7 @@ function Header() {
       active: false,
       onClick: (id, to) => {
         handleActiveNavigation(id);
-        if (!isOpenDropMenuProfile) {
-          toggleDropMenuProfile();
-        }
+        toggleDropMenuProfile();
       },
     },
     {
@@ -163,8 +167,8 @@ function Header() {
     {
       id: 3,
       title: "Khám phá",
-      Icon: <IconFindPeople />,
-      IconActive: <IconFindPeopleFill />,
+      Icon: <IconLocationCircle />,
+      IconActive: <IconLocationFill />,
       active: false,
       to: "/explore",
       onClick: (id, to) => {
@@ -177,8 +181,8 @@ function Header() {
     {
       id: 4,
       title: "Tin nhắn",
-      Icon: <IconMessenger />,
-      IconActive: <IconMessengerFill />,
+      Icon: <IconMessage />,
+      IconActive: <IconMessageFill />,
       active: false,
       to: "/direct/inbox",
       onClick: (id, to) => {
@@ -191,8 +195,8 @@ function Header() {
     {
       id: 5,
       title: "Thông báo",
-      Icon: <IconHeart />,
-      IconActive: <IconHeartFill />,
+      Icon: <IconBell />,
+      IconActive: <IconBellFill />,
       active: false,
       onClick: (id, to) => {
         handleActiveNavigation(id);
@@ -230,27 +234,23 @@ function Header() {
   return (
     <div
       ref={headerRef}
-      className={`sticky top-0 hidden sm:block h-[var(--window-height)] z-50 flex-shrink-0 ${
-        isOpenDropSearch && "w-[var(--header-width)]"
-      }`}
+      className="sticky top-0 hidden sm:block h-[var(--window-height)] z-50 flex-shrink-0"
     >
       <header className="inline-block h-full w-auto relative">
         {/* modal */}
         <ModalLayout
           ref={modalRef}
-          isShow={isShowModal}
-          isShownBtn={isShowBtnCloseModal}
+          isShow={isShow.modal}
+          isShowBtn={isShow.btnCloseModal}
         >
-          {isShownModalPostMedia && <ModalPostMedia />}
+          {isShownModalPostMedia && <PostMediaModal />}
 
-          {isShownModalClearAllRecent && (
-            <ModalClearAllRecent toggle={closeModalClearAllRecent} />
-          )}
+          {isShowClearAllRecentModal && <ModalClearAllRecent />}
         </ModalLayout>
 
         {/* sidebar */}
         <AnimatePresence>
-          {isOpenDrop && (
+          {isShow.dropSidebar && (
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
@@ -260,8 +260,8 @@ function Header() {
               className="absolute top-0 left-[73px] h-full bg-white border-r rounded-r-3xl shadow-2xl overflow-hidden"
             >
               <div className="w-96">
-                {isOpenDropSearch && <DropSearch />}
-                {isOpenDropNotification && <DropNotification />}
+                {isOpenDropSearch && <SearchDrop />}
+                {isOpenDropNotification && <NotificationDrop />}
               </div>
             </motion.div>
           )}
@@ -270,7 +270,7 @@ function Header() {
         <div className="relative h-full w-fit flex flex-col justify-between px-3 py-5 bg-white border-r">
           <div className="px-3 py-5">
             <Link to="/" className="h-9 inline-block">
-              {(isOpenDrop || !matchesSideBar) && (
+              {(isShow.dropSidebar || !matchesSideBar) && (
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -279,7 +279,7 @@ function Header() {
                   <IconReactgram className="w-6 h-6 transition-transform duration-300 hover:scale-105" />
                 </motion.div>
               )}
-              {!isOpenDrop && matchesSideBar && (
+              {!isShow.dropSidebar && matchesSideBar && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -296,7 +296,7 @@ function Header() {
               <NavigationItem
                 key={index}
                 item={nav}
-                isSideBar={isOpenDrop}
+                isSideBar={isShow.dropSidebar}
                 matches={matchesSideBar}
               />
             ))}
@@ -305,23 +305,12 @@ function Header() {
           <div className="relative">
             <NavigationItem
               item={navList[0]}
-              isSideBar={isOpenDrop}
+              isSideBar={isShow.dropSidebar}
               matches={matchesSideBar}
             />
-            <AnimatePresence>
-              {isOpenDropMenuProfile && (
-                <motion.div
-                  initial={{ opacity: 1, scale: "20%", x: 0 }}
-                  animate={{ opacity: 1, scale: "100%", x: 0 }}
-                  exit={{ opacity: 0, scale: "20%", x: 0 }}
-                  style={{ originX: 0, originY: 1 }}
-                  ref={dropMenuProfileRef}
-                  className="absolute bottom-full left-0"
-                >
-                  <DropMenuProfile />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <DropLayout isShow={isOpenDropMenuProfile}>
+              <MenuDrop />
+            </DropLayout>
           </div>
         </div>
       </header>

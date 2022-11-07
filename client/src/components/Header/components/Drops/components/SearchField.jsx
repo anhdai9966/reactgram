@@ -87,7 +87,7 @@ function SearchField() {
             ref={inputSearchRef}
             type="text"
             name="search"
-            className={`h-9 w-full px-10 outline-none bg-transparent ${
+            className={`h-10 w-full px-10 py-1 outline-none bg-transparent ${
               !isTouched && !isToggleDropdownListSearch && "text-[#767680]/60"
             }`}
             value={enteredSearch}

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
-function useLocationChage(handle) {
+function useLocationChange(handle) {
   const location = useLocation();
   const temp = useRef(location)
 
@@ -9,9 +9,10 @@ function useLocationChage(handle) {
     if (location === temp.current) return 
     
     handle();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   return location.pathname;
 }
 
-export default useLocationChage;
+export default useLocationChange;

@@ -1,14 +1,15 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setModalLogin } from "~/app/appSlice";
+import { setShowLoginModal } from "~/app/appSlice";
 import { IconBookmark, IconGear } from "~/components/UI/Icons";
-import DropMenuItem from "./MenuItem";
+import DropMenuItem from "./components/MenuItem";
 
-function DropMenuProfile() {
+function MenuDrop() {
   const dispatch = useDispatch()
+  
   const handleClickItemSwitchUser = () => {
-    dispatch(setModalLogin(true))
+    dispatch(setShowLoginModal(true))
   }
 
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function DropMenuProfile() {
     {
       title: "Đã lưu",
       Icon: <IconBookmark />,
-      to: "/dailai3110/saved",
+      to: "/@dailai3110/saved",
       onClick: (to) => {
         navigate(to);
       },
@@ -62,4 +63,4 @@ function DropMenuProfile() {
   );
 }
 
-export default DropMenuProfile;
+export default MenuDrop;

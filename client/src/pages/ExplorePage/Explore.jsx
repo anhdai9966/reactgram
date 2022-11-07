@@ -1,12 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import images from "~/assets/images";
 import { IconCommentFill, IconHeartFill } from "~/components/UI/Icons";
-import { numberFormater } from "~/services";
+import { numberFormater } from "~/utils";
 
 function Explore() {
+  const navigate = useNavigate();
+
+  const handleClickPostItem = () => {
+    navigate("/post/:postId");
+  };
   return (
     <div className="py-6 px-2">
       <div className="grid grid-cols-3 gap-1 sm:gap-6">
-        <button className="aspect-square overflow-hidden relative group">
+        <button
+          onClick={handleClickPostItem}
+          className="aspect-square overflow-hidden relative group"
+        >
           <div className="absolute inset-0 transition opacity-0 group-hover:opacity-100 group-hover:bg-black/60">
             <div className="w-full h-full flex items-center justify-center gap-6">
               <div className="text-white flex items-center gap-2">

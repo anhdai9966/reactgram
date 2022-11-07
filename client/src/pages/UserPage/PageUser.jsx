@@ -1,22 +1,18 @@
-import { Link, Routes, Route, useParams, Outlet } from "react-router-dom";
-import images from "~/assets/images";
+import { useState } from "react";
+import { useParams, Outlet, useNavigate } from "react-router-dom";
 import {
-  GridIcon,
-  IconCommentFill,
+  IconGrid,
   IconGear,
-  IconHeartFill,
   IconPersonCropCircleBadgeCheckmark,
-  IconProfile,
   IconProfileFill,
   IconTag,
   IconVerified,
-  MoreIcon,
-  SaveIcon,
+  IconBookmark,
 } from "~/components/UI/Icons";
 import { useDocumentTitle } from "~/hooks";
-import { numberFormater } from "~/services";
-import Grid from "./components/Grid";
-import Saved from "./components/Saved";
+import FooterLayout from "~/layouts/FooterLayout";
+import { selectFile } from "~/utils";
+import Tabs from "./components/Tabs";
 
 function PageUser() {
   const para = useParams();
@@ -37,26 +33,57 @@ function PageUser() {
     //   .join("");
   };
 
-  // ---- function definition ----
-  function selectFile(contentType, multiple = false) {
-    return new Promise((resolve) => {
-      let input = document.createElement("input");
-      input.type = "file";
-      input.multiple = multiple;
-      input.accept = contentType; // image/* || audio/* || video/* || image/png, image/jpeg || .pdf || .png, .jpg, .jpeg
+  const navigate = useNavigate();
 
-      input.onchange = (_) => {
-        let files = Array.from(input.files);
-        if (multiple) resolve(files);
-        else resolve(files[0]);
-      };
+  const handleActiveTabs = (id) => {
+    setTabs(() =>
+      tabs.map((tab) => {
+        if (tab.id === id) tab.isActive = true;
+        else tab.isActive = false;
 
-      input.click();
-    });
-  }
+        return tab;
+      })
+    );
+  };
+
+  const [tabs, setTabs] = useState([
+    {
+      id: 1,
+      title: "Bài viết",
+      Icon: <IconGrid />,
+      isActive: true,
+      to: "",
+      onClick: (id, to) => {
+        navigate(to);
+        handleActiveTabs(id);
+      },
+    },
+    {
+      id: 2,
+      title: "Đã lưu",
+      Icon: <IconBookmark />,
+      isActive: false,
+      to: "saved",
+      onClick: (id, to) => {
+        navigate(to);
+        handleActiveTabs(id);
+      },
+    },
+    {
+      id: 3,
+      title: "Được gắn thẻ",
+      Icon: <IconTag />,
+      isActive: false,
+      to: "tagged",
+      onClick: (id, to) => {
+        navigate(to);
+        handleActiveTabs(id);
+      },
+    },
+  ]);
 
   return (
-    <>
+    <FooterLayout>
       <div className="pt-[30px] px-5 w-full">
         <div className="grid grid-cols-3 gap-[30px] pb-11 font-light">
           <div className="flex items-center justify-center">
@@ -129,49 +156,18 @@ function PageUser() {
         </div>
 
         <div className="border-t">
-          <div className="w-full flex items-center justify-center gap-12 uppercase text-xs font-semibold text-[#3c3c43]/60">
-            <div className="py-3 text-[#3c3c43] border-t border-gray-600">
-              <Link
-                to=""
-                className="relative py-2 flex items-center gap-2 h-full rounded-md group"
-              >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%_+_24px)] h-full rounded-lg group-hover:bg-[#3c3c43]/[3%]"></div>
-                <div className="w-3 h-3">
-                  <GridIcon />
-                </div>
-                <span>Bài viết</span>
-              </Link>
-            </div>
-            <div className="py-3">
-              <Link
-                to="saved"
-                className="relative py-2 flex items-center gap-2 h-full rounded-md group"
-              >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%_+_24px)] h-full rounded-lg group-hover:bg-[#3c3c43]/[3%]"></div>
-                <div className="w-3 h-3">
-                  <SaveIcon />
-                </div>
-                <span>Đã lưu</span>
-              </Link>
-            </div>
-            <div className="py-3">
-              <Link
-                to="tagged"
-                className="relative py-2 flex items-center gap-2 h-full rounded-md group"
-              >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%_+_24px)] h-full rounded-lg group-hover:bg-[#3c3c43]/[3%]"></div>
-                <div className="w-3 h-3">
-                  <IconTag />
-                </div>
-                <span>Được gắn thẻ</span>
-              </Link>
-            </div>
-          </div>
+          <ul className="w-full flex items-center justify-center gap-12 uppercase text-sm font-semibold text-[#3c3c43]/60">
+            {tabs.map((tab) => (
+              <Tabs key={tab.id} item={tab} />
+            ))}
+          </ul>
         </div>
-        
-        <Outlet />
+
+        <div className="py-1">
+          <Outlet />
+        </div>
       </div>
-    </>
+    </FooterLayout>
   );
 }
 

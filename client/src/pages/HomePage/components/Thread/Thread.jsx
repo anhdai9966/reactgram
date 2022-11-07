@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
 import images from "~/assets/images";
 import {
   IconEmoji,
@@ -16,7 +15,8 @@ import {
   setShownModalDetailThead,
   setShownModalMenuThread,
 } from "../../HomeSlice";
-import Emoji from "./Emoji";
+import DropLayout from "~/layouts/DropLayout";
+import Emoji from "~/components/Emoji";
 
 function Thread() {
   const dispatch = useDispatch();
@@ -26,6 +26,9 @@ function Thread() {
   };
 
   const handleClickIconComment = () => {
+    // navigate('/post/123')
+    window.history.replaceState(null, "test", "/post/123");
+    // window.history.back()
     dispatch(setShownModalDetailThead());
   };
 
@@ -38,7 +41,7 @@ function Thread() {
   const emojiRef = useOnClickOutside(() => {
     closeEmoji();
   });
-  
+
   const handleClickBtnEmoji = () => {
     shownEmoji();
   };
@@ -171,20 +174,11 @@ function Thread() {
                 <IconEmoji />
               </div>
             </button>
-            <AnimatePresence>
-              {isShownEmoji && (
-                <motion.div
-                  initial={{ opacity: 1, scale: "20%", x: 0 }}
-                  animate={{ opacity: 1, scale: "100%", x: 0 }}
-                  exit={{ opacity: 0, scale: "20%", x: 0 }}
-                  style={{ originX: 0, originY: 1 }}
-                  ref={emojiRef}
-                  className="absolute bottom-full left-0"
-                >
-                  <Emoji setFalse={closeEmoji} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <DropLayout isShow={isShownEmoji} ref={emojiRef}>
+              <div className="w-[330px] h-[330px]">
+                <Emoji setFalse={closeEmoji} />
+              </div>
+            </DropLayout>
           </div>
           <form className="w-full flex items-center flex-grow px-1">
             <textarea

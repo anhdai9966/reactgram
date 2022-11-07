@@ -1,2 +1,2 @@
-export { default as ModalLogin } from './LoginModal'
-export { default } from './Modals'
+export { default as LoginModal } from './LoginModal'
+export { default as NotificationModal } from './NotificationModal'

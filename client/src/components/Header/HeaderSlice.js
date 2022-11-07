@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  isShowClearAllRecentModal: false,
+  //
   isToggleDropdownMenuProfile: false,
   isToggleDropdownListSearch: false,
   isToggleDropdownListNotification: false,
 
   isOpenModalPostMedia: false,
-  isToggleModalClearAllRecent: false,
 
   isLoadingSearch: false,
   isToggleSubSidebar: false,
@@ -16,6 +17,10 @@ const headerSlice = createSlice({
   name: "header",
   initialState,
   reducers: {
+    setIsShowClearAllRecentModal(state, action) {
+      state.isShowClearAllRecentModal = action.payload;
+    },
+    // 
     setHiddenAllDropdownHeader(state) {
       state.isToggleDropdownMenuProfile = false;
       state.isToggleDropdownListSearch = false;
@@ -37,9 +42,6 @@ const headerSlice = createSlice({
     setShownModalPostMedia(state) {
       state.isOpenModalPostMedia = true;
     },
-    setShownModalClearAllRecent(state) {
-      state.isToggleModalClearAllRecent = true;
-    },
     setIsLoading(state, action) {
       state.isLoadingSearch = action.payload;
     },
@@ -47,6 +49,8 @@ const headerSlice = createSlice({
 });
 
 export const {
+  setIsShowClearAllRecentModal,
+  //
   setHiddenAllDropdownHeader,
   setHiddenAllModalHeader,
   setShownDropdownMenuProfile,
@@ -54,7 +58,6 @@ export const {
   setIsLoading,
   setShownDropdownListNotification,
   setShownModalPostMedia,
-  setShownModalClearAllRecent,
 } = headerSlice.actions;
 
 export default headerSlice.reducer;

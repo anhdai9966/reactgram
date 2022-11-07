@@ -1,20 +1,17 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import images from "~/assets/images";
 import { IconVerified, IconXmark } from "~/components/UI/Icons";
-import { useBoolean } from "~/hooks";
+import { setIsShowClearAllRecentModal } from "~/components/Header/HeaderSlice";
 import SearchField from "./components/SearchField";
 
-function DropSearch() {
+function SearchDrop() {
   const navigate = useNavigate();
 
-  const {
-    state: isShownModalClearAllRecent,
-    setTrue: shownModalClearAllRecent,
-    setFalse: closeModalClearAllRecent,
-  } = useBoolean();
+  const dispatch = useDispatch();
 
   const handleClearAllRecent = () => {
-    shownModalClearAllRecent();
+    dispatch(setIsShowClearAllRecentModal(true));
   };
 
   const handleClickItemUser = (userId) => {
@@ -66,4 +63,4 @@ function DropSearch() {
   );
 }
 
-export default DropSearch;
+export default SearchDrop;

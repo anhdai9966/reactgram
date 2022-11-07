@@ -20,7 +20,7 @@ function CommentThread() {
   };
 
   return (
-    <article className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+    <article className="relative">
       <div className="flex text-sm font-light">
         <div className="bg-black flex items-center">
           <img src={images.post2} alt="post" />
@@ -91,7 +91,7 @@ function CommentThread() {
               <IconPaperplane className="w-6 h-6" />
             </div>
 
-            <IconBookmark />
+            <IconBookmark className="w-6 h-6" />
           </section>
 
           <section className="px-3 pb-2">
