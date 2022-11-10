@@ -1,0 +1,36 @@
+{
+  "first_name": "",
+  "last_name": "",
+  "email": "dailc.1996@gmail.com",
+  "is_email_confirmed": true,
+  "is_phone_confirmed": false,
+  "username": "dailai3110",
+  "phone_number": "+84 96 392 38 12",
+  "gender": 1,
+  "birthday": null,
+  "fb_birthday": null,
+  "biography": "",
+  "bio_links_for_web_edit_only": [],
+  "external_url": "",
+  "chaining_enabled": true,
+  "presence_disabled": false,
+  "business_account": false,
+  "usertag_review_enabled": false,
+  "custom_gender": "",
+  "trusted_username": "dailai3110",
+  "trust_days": 14,
+  "profile_edit_params": {
+      "username": {
+          "should_show_confirmation_dialog": false,
+          "is_pending_review": false,
+          "confirmation_dialog_text": "Because your account reaches a lot of people, your username change may need to be reviewed. If so, you'll be notified when we've reviewed it. If not, your username will change immediately.",
+          "disclaimer_text": ""
+      },
+      "full_name": {
+          "should_show_confirmation_dialog": false,
+          "is_pending_review": false,
+          "confirmation_dialog_text": "Because your account is verified, your name change may need to be reviewed. If so, you'll be notified when we've reviewed it. If not, your name will change immediately.",
+          "disclaimer_text": ""
+      }
+  }
+}

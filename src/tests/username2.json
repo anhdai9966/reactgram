@@ -1,0 +1,36 @@
+{
+  "user": [
+    {
+      "biography": "Stream THERE'S NO ONE AT ALL 🍭",
+      "bio_url": "https://spoti.fi/3vtT3Nw",
+      "edge_followed_by": {
+        "count": 6707509
+      },
+      "edge_follow": {
+        "count": 5
+      },
+      "full_name": "Sơn Tùng M-TP 💋",
+      "hide_like_and_view_counts": false,
+      "is_private": false,
+      "is_verified": true,
+      "profile_pic_url": "/api/v1/users/1/files/6",
+      "username": "sontungmtp"
+    },
+    {
+      "biography": "",
+      "bio_url": "https://youtu.be/dYSDH1bgWss",
+      "edge_followed_by": {
+        "count": 880430
+      },
+      "edge_follow": {
+        "count": 1040
+      },
+      "full_name": "🧟‍♀️",
+      "hide_like_and_view_counts": false,
+      "is_private": false,
+      "is_verified": true,
+      "profile_pic_url": "/api/v1/users/1/files/8",
+      "username": "lf.tlinh"
+    }
+  ]
+}

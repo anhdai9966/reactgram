@@ -1,0 +1,146 @@
+{
+    "user2":
+    {
+        "biography": "Stream THERE'S NO ONE AT ALL 🍭",
+        "bio_links": [
+            {
+                "title": "",
+                "url": "https://spoti.fi/3vtT3Nw",
+                "link_type": "external"
+            }
+        ],
+        "biography_with_entities": {
+            "raw_text": "Stream THERE'S NO ONE AT ALL 🍭",
+            "entities": []
+        },
+        "blocked_by_viewer": false,
+        "restricted_by_viewer": false,
+        "country_block": false,
+        "external_url": "https://spoti.fi/3vtT3Nw",
+        "edge_followed_by": {
+            "count": 6707400
+        },
+        "followed_by_viewer": true,
+        "edge_follow": {
+            "count": 5
+        },
+        "follows_viewer": false,
+        "full_name": "Sơn Tùng M-TP 💋",
+        "group_metadata": null,
+        "has_ar_effects": false,
+        "has_clips": true,
+        "has_guides": false,
+        "has_channel": false,
+        "has_blocked_viewer": false,
+        "highlight_reel_count": 0,
+        "has_requested_viewer": false,
+        "hide_like_and_view_counts": false,
+        "is_business_account": true,
+        "is_eligible_to_view_account_transparency": true,
+        "is_professional_account": true,
+        "is_supervision_enabled": false,
+        "is_guardian_of_viewer": false,
+        "is_supervised_by_viewer": false,
+        "is_supervised_user": false,
+        "is_embeds_disabled": false,
+        "is_joined_recently": false,
+        "guardian_id": null,
+        "business_address_json": null,
+        "business_contact_method": "UNKNOWN",
+        "business_email": null,
+        "business_phone_number": null,
+        "business_category_name": "Creators & Celebrities",
+        "overall_category_name": null,
+        "category_enum": null,
+        "category_name": null,
+        "is_private": false,
+        "is_verified": true,
+        "profile_pic_url": "/api/v1/users/1/files/6",
+        "profile_pic_url_hd": "/api/v1/users/1/files/6",
+        "requested_by_viewer": false,
+        "should_show_category": true,
+        "should_show_public_contacts": true,
+        "state_controlled_media_country": null,
+        "location_transparency_country": null,
+        "transparency_label": null,
+        "transparency_product": "STATE_CONTROLLED_MEDIA",
+        "username": "sontungmtp",
+        "connected_fb_page": null,
+        "pronouns": []
+    },
+    
+    "user": {
+        "biography": "💌Booking: andiez.namtruong@gmail.com\n✨Facebook: Nam Trương\n💥Fanpage: Andiez\nYoutube: Andiez Official\nTiktok: www.tiktok.com/@andiez02",
+        "bio_links": [],
+        "biography_with_entities": {
+            "raw_text": "💌Booking: andiez.namtruong@gmail.com\n✨Facebook: Nam Trương\n💥Fanpage: Andiez\nYoutube: Andiez Official\nTiktok: www.tiktok.com/@andiez02",
+            "entities": [
+                {
+                    "user": {
+                        "username": "andiez02"
+                    },
+                    "hashtag": null
+                }
+            ]
+        },
+        "blocked_by_viewer": false,
+        "restricted_by_viewer": false,
+        "country_block": false,
+        "external_url": null,
+        "external_url_linkshimmed": null,
+        "edge_followed_by": {
+            "count": 12652
+        },
+        "followed_by_viewer": true,
+        "edge_follow": {
+            "count": 52
+        },
+        "follows_viewer": false,
+        "full_name": "Nam Trương",
+        "group_metadata": null,
+        "has_ar_effects": false,
+        "has_clips": true,
+        "has_guides": false,
+        "has_channel": false,
+        "has_blocked_viewer": false,
+        "highlight_reel_count": 4,
+        "has_requested_viewer": false,
+        "hide_like_and_view_counts": false,
+        "is_business_account": false,
+        "is_eligible_to_view_account_transparency": true,
+        "is_professional_account": true,
+        "is_supervision_enabled": false,
+        "is_guardian_of_viewer": false,
+        "is_supervised_by_viewer": false,
+        "is_supervised_user": false,
+        "is_embeds_disabled": false,
+        "is_joined_recently": false,
+        "guardian_id": null,
+        "business_address_json": null,
+        "business_contact_method": "UNKNOWN",
+        "business_email": null,
+        "business_phone_number": null,
+        "business_category_name": null,
+        "overall_category_name": null,
+        "category_enum": null,
+        "category_name": "Musician/band",
+        "is_private": false,
+        "is_verified": false,
+        "edge_mutual_followed_by": {
+            "count": 0,
+            "edges": []
+        },
+        "profile_pic_url": "/api/v1/users/1/files/7",
+        "profile_pic_url_hd": "/api/v1/users/1/files/7",
+        "requested_by_viewer": false,
+        "should_show_category": true,
+        "should_show_public_contacts": false,
+        "state_controlled_media_country": null,
+        "location_transparency_country": null,
+        "transparency_label": null,
+        "transparency_product": "STATE_CONTROLLED_MEDIA",
+        "username": "andiez.namtruong",
+        "connected_fb_page": null,
+        "pronouns": []
+    }
+}
