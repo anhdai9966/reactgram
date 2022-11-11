@@ -3,10 +3,9 @@ import { IconSpinner8Spins } from "~/components/UI/Icons";
 
 function DropMenuItem({ item }) {
   const { isLoadingAccount } = useSelector((state) => state.account);
-  
+
   const { title, Icon, to, onClick, iconAction = false } = item;
-  
-  console.log(isLoadingAccount && iconAction)
+
   return (
     <div className="px-4 py-2 hover:bg-[#3c3c43]/[3%]">
       <button
@@ -19,7 +18,7 @@ function DropMenuItem({ item }) {
             {Icon}
           </div>
         )}
-        {(isLoadingAccount && iconAction) && (
+        {isLoadingAccount && iconAction && (
           <IconSpinner8Spins className="w-4 h-4 animate-spinner8Spins" />
         )}
       </button>

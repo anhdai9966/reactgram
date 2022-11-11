@@ -1,8 +1,9 @@
-import { IconBellCircle, IconHeartCircle } from "~/components/UI/Icons";
+import { IconBellCircle } from "~/components/UI/Icons";
+import AnimateUpLayout from "~/layouts/AnimateUpLayout";
 
 function NotificationDrop() {
   return (
-    <div>
+    <AnimateUpLayout delay={0.1}>
       <div className="px-4 py-6 flex flex-col gap-8">
         <h2 className="font-semibold text-xl">Thông báo</h2>
         <div>
@@ -18,7 +19,7 @@ function NotificationDrop() {
           </div>
         </div>
       </div>
-    </div>
+    </AnimateUpLayout>
   );
 }
 

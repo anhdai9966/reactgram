@@ -8,7 +8,7 @@ import {
   useBoolean,
 } from "~/hooks";
 import routes from "~/routes";
-import { setIsLoggedIn } from "./app/accountSlice";
+import { setCurrentUser, setIsLoggedIn } from "./app/accountSlice";
 import LoadingScreen from "./components/LoadingScreen";
 import { account } from "./services";
 
@@ -36,10 +36,11 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        showIsLoadingScreeen()
-        await account.checkLogin((isState) => {
+        showIsLoadingScreeen();
+        const user = await account.checkLogin((isState) => {
           dispatch(setIsLoggedIn(isState));
         });
+        dispatch(setCurrentUser(user));
       } catch (error) {
         console.log(error);
       }

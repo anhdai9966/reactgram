@@ -49,6 +49,9 @@ const accountSlice = createSlice({
     },
     setLoadingAccount(state, action) {
       state.isLoadingAccount = action.payload
+    },
+    setCurrentUser(state, action) {
+      state.currentUser = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -80,5 +83,5 @@ const accountSlice = createSlice({
   },
 });
 
-export const { setIsLoggedIn, resetLoggedMessages, setLoadingAccount } = accountSlice.actions;
+export const { setIsLoggedIn, resetLoggedMessages, setLoadingAccount, setCurrentUser } = accountSlice.actions;
 export default accountSlice.reducer;

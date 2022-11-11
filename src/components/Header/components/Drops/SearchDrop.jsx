@@ -4,6 +4,7 @@ import images from "~/assets/images";
 import { IconVerified, IconXmark } from "~/components/UI/Icons";
 import { setIsShowClearAllRecentModal } from "~/components/Header/HeaderSlice";
 import SearchField from "./components/SearchField";
+import AnimateUpLayout from "~/layouts/AnimateUpLayout";
 
 function SearchDrop() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function SearchDrop() {
   };
 
   return (
-    <div>
+    <AnimateUpLayout delay={.1}>
       <div className="px-4 py-6 flex flex-col gap-8 border-b">
         <h4 className="text-xl font-semibold px-3">Tìm kiếm</h4>
         <SearchField />
@@ -59,7 +60,7 @@ function SearchDrop() {
           </li>
         </ul>
       </div>
-    </div>
+    </AnimateUpLayout>
   );
 }
 

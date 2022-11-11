@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setIsLoggedIn, setLoadingAccount } from "~/app/accountSlice";
 import { setShowLoginModal } from "~/app/appSlice";
-import { IconBookmark, IconGear, IconSpinner8Spins } from "~/components/UI/Icons";
+import { IconBookmark, IconGear } from "~/components/UI/Icons";
 import { logout } from "~/services/accountService";
 import DropMenuItem from "./components/MenuItem";
 
@@ -18,7 +18,7 @@ function MenuDrop() {
 
   async function handleLogout() {
     try {
-      await logout()
+      await logout();
     } catch (error) {
       console.log(error);
     }
@@ -54,12 +54,12 @@ function MenuDrop() {
       title: "Đăng xuất",
       iconAction: true,
       onClick: (to) => {
-        dispatch(setLoadingAccount(true))
+        dispatch(setLoadingAccount(true));
         setTimeout(() => {
           handleLogout();
-          dispatch(setIsLoggedIn(false))
-          dispatch(setLoadingAccount(false))
-        }, 600);
+          dispatch(setIsLoggedIn(false));
+          dispatch(setLoadingAccount(false));
+        }, 800);
       },
     },
   ]);

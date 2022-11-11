@@ -12,12 +12,15 @@ import {
 import { auth, provider } from "~/configs";
 
 export async function signup(email, password) {
-  return await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function login(email, password, isChecked = false) {
   try {
-    console.log(isChecked)
     setPersistence(
       auth,
       isChecked ? browserLocalPersistence : browserSessionPersistence

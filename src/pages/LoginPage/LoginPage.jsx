@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { LogoGoogle, LogoReactgram } from "~/components/UI/Logos";
+import { LogoReactgram } from "~/components/UI/Logos";
 import images from "~/assets/images";
 import FooterLayout from "~/layouts/FooterLayout";
 import { useDocumentTitle } from "~/hooks";
-import { accountLogin, accountloginWithGoogle } from "~/app/accountSlice";
+import { accountLogin } from "~/app/accountSlice";
 import { IconSpinner8SpinsWhite } from "~/components/UI/Icons";
 import { motion } from "framer-motion";
-import { isEmpty } from "@firebase/util";
+import LoginWithGoogle from "~/components/LoginWithGoogle";
+import Or from "~/components/Or";
+import AnimateUpLayout from "~/layouts/AnimateUpLayout";
+import { isEmpty } from "~/utils";
 
 function PageLogin() {
   useDocumentTitle("Reactgram");
@@ -29,22 +32,24 @@ function PageLogin() {
     dispatch(accountLogin(data));
   };
 
-  const handleLoginWithGoogle = async () => {
-    dispatch(accountloginWithGoogle());
-  };
+  const valueAllField = !watch("email") || !watch("password");
 
   return (
     <FooterLayout>
-      <motion.div
-        initial={{ y: "100px", opacity: 0 }}
-        animate={{ y: "0", opacity: 1 }}
-        exit={{ y: "100px", opacity: 0 }}
-        transition={{duration: .3}}
-        className="flex justify-center my-12"
-      >
+      <AnimateUpLayout className="flex justify-center my-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="w-96 bg-[#f0cdd8] hidden lg:block rounded-xl overflow-hidden">
+          <div className="w-96 bg-[#f0cdd8] hidden lg:block rounded-xl overflow-hidden relative">
             <img src={images.signin} alt="signin" />
+            <p className="text-[#6e4452] text-xs font-light absolute bottom-6 left-8">
+              Tác phẩm của{" "}
+              <a
+                href="https://dribbble.com/karicca"
+                target="blank"
+                className="underline"
+              >
+                Irina Valeeva
+              </a>
+            </p>
           </div>
           <div className="w-full sm:w-96 space-y-3">
             <div className="bg-white border rounded-xl">
@@ -54,7 +59,7 @@ function PageLogin() {
               <div className="p-6 text-sm font-light">
                 <div className="w-[270px] mx-auto">
                   <form
-                    className="grid grid-cols-1 grid-rows-4 gap-2"
+                    className="grid grid-cols-1 grid-rows-4 gap-3"
                     onSubmit={handleSubmit(onSubmit)}
                   >
                     <div className="relative text-xs">
@@ -71,15 +76,19 @@ function PageLogin() {
                       <input
                         type="text"
                         id="emailInput"
-                        className={`${
-                          isLoggedMessage.includes("user") && "border-[#FF3B30]"
-                        } relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1 w-full`}
+                        style={{
+                          borderColor:
+                            isLoggedMessage === "auth/user-not-found"
+                              ? "#FF3B30"
+                              : "#d1d5db",
+                        }}
+                        className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1 w-full"
                         {...register("email", {
                           required: "Email is required",
                           pattern: {
-                            // value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            value:
-                              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            // value:
+                            //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                             message: "Bạn phải nhập đúng email",
                           },
                         })}
@@ -106,17 +115,25 @@ function PageLogin() {
                           },
                         })}
                         id="passwordInput"
-                        className={`${
-                          isLoggedMessage.includes("password") &&
-                          "border-[#FF3B30]"
-                        } relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1  w-full`}
+                        style={{
+                          borderColor:
+                            isLoggedMessage === "auth/wrong-password"
+                              ? "#FF3B30"
+                              : "#d1d5db",
+                        }}
+                        className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1  w-full"
                       />
                     </div>
                     <label className="w-fit flex gap-2 items-center ml-1 cursor-pointer">
                       <input type="checkbox" {...register("isChecked")} />
                       <span className="text-xs">Lưu thông tin đăng nhập</span>
                     </label>
-                    <button disabled={!watch('email') || !watch('password')} className="h-8 border rounded bg-[#0095f6] hover:disabled:cursor-not-allowed">
+                    <button
+                      disabled={valueAllField}
+                      className={`h-8 border rounded bg-[#0095f6] hover:disabled:cursor-not-allowed ${
+                        valueAllField && "opacity-50"
+                      }`}
+                    >
                       {isLoadingAccount && (
                         <div className="w-4 h-4 mx-auto">
                           <IconSpinner8SpinsWhite className="text-white animate-spinner12Spins" />
@@ -129,24 +146,12 @@ function PageLogin() {
                       )}
                     </button>
                   </form>
-                  <div className="flex justify-evenly items-center py-4">
-                    <div className="w-24 border-t"></div>
-                    <p className="uppercase text-xs font-semibold text-[#8c8c8c]">
-                      Hoặc
-                    </p>
-                    <div className="w-24 border-t"></div>
+                  <div className="">
+                    <Or />
                   </div>
-                  <button
-                    onClick={handleLoginWithGoogle}
-                    className="w-full h-8 rounded flex items-center justify-center gap-3 hover:bg-black/[3%]"
-                  >
-                    <div className="w-5 h-5">
-                      <LogoGoogle />
-                    </div>
-                    <span className="font-semibold text-[#8c8c8c]">
-                      Đăng nhập bằng Google
-                    </span>
-                  </button>
+                  <div className="">
+                    <LoginWithGoogle />
+                  </div>
                   {!isEmpty(errors) && (
                     <motion.div
                       initial={{ y: "-50%", opacity: 0 }}
@@ -165,16 +170,16 @@ function PageLogin() {
                       exit={{ y: "50%", opacity: 0 }}
                       className="text-red-500 text-center mt-5"
                     >
-                      {isLoggedMessage.includes("password") && (
+                      {isLoggedMessage === "auth/user-not-found" && (
+                        <p>
+                          Email bạn đã nhập không thuộc về tài khoản nào. Vui
+                          lòng kiểm tra email của bạn và thử lại.
+                        </p>
+                      )}
+                      {isLoggedMessage === "auth/wrong-password" && (
                         <p>
                           Đã xảy ra sự cố khi đăng nhập vào Instagram. Hãy kiểm
                           tra lại mật khẩu.
-                        </p>
-                      )}
-                      {isLoggedMessage.includes("user") && (
-                        <p>
-                          Email bạn đã nhập không thuộc về tài khoản nào. Vui lòng
-                          kiểm tra email của bạn và thử lại.
                         </p>
                       )}
                     </motion.div>
@@ -192,7 +197,7 @@ function PageLogin() {
               <p className="my-3 text-center text-sm font-light space-x-2">
                 <span>Bạn chưa có tài khoản ư?</span>
                 <Link
-                  to="/signup"
+                  to="/accounts/emailsignup"
                   className="font-semibold text-[#007AFF] hover:underline"
                 >
                   Đăng ký
@@ -201,7 +206,7 @@ function PageLogin() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </AnimateUpLayout>
     </FooterLayout>
   );
 }

@@ -1,6 +1,6 @@
 import Footer from "../../components/Footer";
 
-function HasFooterLayout({ children }) {
+function FooterLayout({ children }) {
   return (
     <div className="h-[var(--window-height)] bg-[#fafafa] relative overflow-y-auto scrollbar-gutter">
       <div className="container mx-auto h-full flex flex-col items-center justify-between">
@@ -11,4 +11,4 @@ function HasFooterLayout({ children }) {
   );
 }
 
-export default HasFooterLayout;
+export default FooterLayout;

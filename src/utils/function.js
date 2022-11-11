@@ -39,6 +39,10 @@ export function readFileToDataUrl(file) {
   })
 }
 
+export function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 // const getImageUrl = async () => {
 //   const dataUrl = editor.getImage().toDataURL()
 //   const result = await fetch(dataUrl)

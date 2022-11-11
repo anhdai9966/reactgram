@@ -13,11 +13,12 @@ import { ModalCommentThread } from "~/pages/HomePage/components/Modals";
 import AccountsPage from "~/pages/AccountsPage";
 import EditAccount from "~/pages/AccountsPage/components/EditAccount";
 import ChangePassword from "~/pages/AccountsPage/components/ChangePassword";
+import SignupPage from "~/pages/SignupPage";
 
 const routes = (isLoggedIn) => [
   {
     path: "/",
-    element: isLoggedIn ? <DefaultLayout /> : <Navigate to="/login" />,
+    element: isLoggedIn ? <DefaultLayout /> : <Navigate to="/accounts/login" />,
     children: [
       {
         path: "/app",
@@ -65,8 +66,15 @@ const routes = (isLoggedIn) => [
     path: "/",
     element: !isLoggedIn ? <Outlet /> : <Navigate to="/app" />,
     children: [
-      { path: "login", element: <LoginPage /> },
-      { path: "/", element: <Navigate to="/login" /> },
+      {
+        path: "accounts",
+        element: <Outlet />,
+        children: [
+          { path: "login", element: <LoginPage /> },
+          { path: "emailsignup", element: <SignupPage /> },
+        ],
+      },
+      { path: "/", element: <Navigate to="/accounts/login" /> },
     ],
   },
 ];
