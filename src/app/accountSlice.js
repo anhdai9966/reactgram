@@ -1,31 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { account } from "~/services";
+import { users } from "~/services";
 
-export const accountLogin = createAsyncThunk(
+export const fetchUser = createAsyncThunk(
   "account/accountLogin",
-  async ({ email, password, isChecked }, { rejectWithValue }) => {
+  async (userId, thunkAPI) => {
     try {
-      const res = await account.login(email, password, isChecked);
-      // const res = await signInWithEmailAndPassword(auth, email, password);
-      return res.user;
-    } catch (error) {
-      // console.log(error.message);
-      throw rejectWithValue(error.code);
-    }
-  }
-);
+      const resUser = await users.getUser(userId);
 
-export const accountloginWithGoogle = createAsyncThunk(
-  "account/loginWithGoogle",
-  async (thunkAPI) => {
-    try {
-      const result = await account.loginWithGoogle();
-      // The signed-in user info.
-      return result.user;
+      return resUser.data.data.user;
     } catch (error) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      thunkAPI.rejectWithValue(errorCode);
+      console.log(error);
+      // console.log(error.message);
+      // const errorCode = error.code;
+      // throw thunkAPI.rejectWithValue(errorCode);
     }
   }
 );
@@ -44,44 +31,38 @@ const accountSlice = createSlice({
     setIsLoggedIn(state, action) {
       state.isLoggedIn = action.payload;
     },
-    resetLoggedMessages(state) {
-      state.isLoggedMessage = "";
+    setLoggedMessages(state, action) {
+      state.isLoggedMessage = action.payload;
     },
     setLoadingAccount(state, action) {
-      state.isLoadingAccount = action.payload
+      state.isLoadingAccount = action.payload;
     },
     setCurrentUser(state, action) {
-      state.currentUser = action.payload
-    }
+      state.currentUser = action.payload;
+    },
+    setLogOut(state) {
+      state.isLoggedIn = false;
+      state.isLoadingAccount = false;
+      state.currentUser = {};
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(accountLogin.pending, (state, action) => {
-      state.isLoadingAccount = true;
-      state.isLoggedMessage = "";
-    });
-    builder.addCase(accountLogin.fulfilled, (state, action) => {
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.currentUser = action.payload;
-      state.isLoadingAccount = false;
       state.isLoggedIn = true;
       state.isLoggedMessage = "";
     });
-    builder.addCase(accountLogin.rejected, (state, action) => {
-      state.isLoggedMessage = action.payload;
+    builder.addCase(fetchUser.rejected, (state, action) => {
       state.isLoggedIn = false;
-      state.isLoadingAccount = false;
-    });
-    builder.addCase(accountloginWithGoogle.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-      state.isLoggedIn = true;
-      state.isLoadingAccount = false;
-    });
-    builder.addCase(accountloginWithGoogle.rejected, (state, action) => {
-      state.isLoggedMessage = action.payload;
-      state.isLoggedIn = false;
-      state.isLoadingAccount = false;
     });
   },
 });
 
-export const { setIsLoggedIn, resetLoggedMessages, setLoadingAccount, setCurrentUser } = accountSlice.actions;
+export const {
+  setIsLoggedIn,
+  setLoggedMessages,
+  setLoadingAccount,
+  setCurrentUser,
+  setLogOut,
+} = accountSlice.actions;
 export default accountSlice.reducer;

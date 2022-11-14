@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setIsLoggedIn, setLoadingAccount } from "~/app/accountSlice";
+import { setLoadingAccount, setLogOut } from "~/app/accountSlice";
 import { setShowLoginModal } from "~/app/appSlice";
 import { IconBookmark, IconGear } from "~/components/UI/Icons";
-import { logout } from "~/services/accountService";
+import { logout } from "~/services/authenticationService";
 import DropMenuItem from "./components/MenuItem";
 
 function MenuDrop() {
@@ -19,6 +19,7 @@ function MenuDrop() {
   async function handleLogout() {
     try {
       await logout();
+      dispatch(setLogOut())
     } catch (error) {
       console.log(error);
     }
@@ -57,8 +58,6 @@ function MenuDrop() {
         dispatch(setLoadingAccount(true));
         setTimeout(() => {
           handleLogout();
-          dispatch(setIsLoggedIn(false));
-          dispatch(setLoadingAccount(false));
         }, 800);
       },
     },

@@ -1,12 +1,28 @@
 import { useDispatch } from "react-redux";
-import { accountloginWithGoogle } from "~/app/accountSlice";
+import { fetchUser } from "~/app/accountSlice";
 import { LogoGoogle } from "~/components/UI/Logos";
+import { authentication } from "~/services";
+import users from "~/services/usersService";
 
 function LoginWithGoogle({ className }) {
   const dispatch = useDispatch();
 
   const handleLoginWithGoogle = async () => {
-    dispatch(accountloginWithGoogle());
+    try {
+      const userResult = await authentication.loginWithGoogle();
+      const user = userResult.user;
+      // kiểm tra user với firestore
+      const checkUser = await users.checkUserById(user.uid);
+      //  nếu chưa có thì tạo thông tin với firestore không thì lấy thông tin
+      if (!checkUser.data.check_id) {
+        const newResUser = await users.createUser(user);
+        dispatch(fetchUser(newResUser.data.data.user.uid));
+      } else {
+        dispatch(fetchUser(user.uid));
+      }
+    } catch (error) {
+      console.log(error.code);
+    }
   };
 
   return (

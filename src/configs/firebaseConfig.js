@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,16 +16,17 @@ const firebaseConfig = {
   storageBucket: "reactjs-api-a31a3.appspot.com",
   messagingSenderId: "466254532477",
   appId: "1:466254532477:web:ca48108627cfa7bbee0614",
-  measurementId: "G-XWRB84HDJS"
+  measurementId: "G-XWRB84HDJS",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-const auth = getAuth(app)
-auth.languageCode = 'vi';
+const auth = getAuth(app);
+auth.languageCode = "vi";
+const storage = getStorage(app);
 
 const provider = new GoogleAuthProvider();
 
-export { db, auth, provider };
+export { db, auth, provider, storage };

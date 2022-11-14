@@ -243,7 +243,9 @@ function Header() {
           isShow={isShow.modal}
           isShowBtn={isShow.btnCloseModal}
         >
-          {isShownModalPostMedia && <PostMediaModal />}
+          {isShownModalPostMedia && (
+            <PostMediaModal setFalse={closeModalPostMedia} />
+          )}
 
           {isShowClearAllRecentModal && <ModalClearAllRecent />}
         </ModalLayout>

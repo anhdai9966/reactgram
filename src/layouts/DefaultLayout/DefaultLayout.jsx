@@ -5,10 +5,12 @@ import Header from "~/components/Header";
 import { setShowLoginModal } from "~/app/appSlice";
 import { LoginModal, NotificationModal } from "~/components/Modals";
 import ModalLayout from "~/layouts/ModalLayout";
-import OverlayScreen from "~/components/OverlayScreen";
+import OverlayCloseScreen from "~/components/OverlayCloseScreen";
+import Toast from "~/components/Toast";
+import ToastLayout from "../Animate/ToastLayout";
 
 function DefaultLayout() {
-  const { isShowLoginModal } = useSelector((state) => state.app);
+  const { isShowLoginModal, isShowToast } = useSelector((state) => state.app);
   const { isLoadingAccount } = useSelector((state) => state.account);
   const dispatch = useDispatch();
 
@@ -43,7 +45,14 @@ function DefaultLayout() {
         {isShownNotificationModal && <NotificationModal />}
       </ModalLayout>
 
-      {isLoadingAccount && (<OverlayScreen />)}
+      {isLoadingAccount && <OverlayCloseScreen />}
+
+      <ToastLayout
+        isShow={isShowToast}
+        className="fixed left-1/2 -translate-x-1/2 bottom-16 z-50 transition-all"
+      >
+        <Toast />
+      </ToastLayout>
     </div>
   );
 }

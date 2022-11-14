@@ -4,6 +4,8 @@ const initialState = {
   isLoggedIn: false,
   isShowLoginModal: false,
   isMountHomePage: false,
+  isShowToast: false,
+  toastMessage: "",
 };
 
 const appSlice = createSlice({
@@ -16,9 +18,18 @@ const appSlice = createSlice({
     setMountHomePage(state, action) {
       state.isMountHomePage = action.payload;
     },
+    showToast(state, action) {
+      state.isShowToast = true;
+      state.toastMessage = action.payload;
+    },
+    closeToast(state) {
+      state.isShowToast = false;
+      state.toastMessage = "";
+    },
   },
 });
 
-export const { setShowLoginModal, setMountHomePage } = appSlice.actions;
+export const { setShowLoginModal, setMountHomePage, showToast, closeToast } =
+  appSlice.actions;
 
 export default appSlice.reducer;

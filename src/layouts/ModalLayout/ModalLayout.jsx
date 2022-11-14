@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { forwardRef } from "react";
 import { IconXmark } from "~/components/UI/Icons";
 
-const Modals = forwardRef((props, ref) => {
+const ModalLayout = forwardRef((props, ref) => {
   const { isShow = false, isShowBtn = false, children = null } = props;
 
   return (
@@ -50,4 +50,4 @@ const Modals = forwardRef((props, ref) => {
   );
 });
 
-export default Modals;
+export default ModalLayout;

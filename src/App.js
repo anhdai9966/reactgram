@@ -8,9 +8,9 @@ import {
   useBoolean,
 } from "~/hooks";
 import routes from "~/routes";
-import { setCurrentUser, setIsLoggedIn } from "./app/accountSlice";
+import { fetchUser, setIsLoggedIn } from "./app/accountSlice";
 import LoadingScreen from "./components/LoadingScreen";
-import { account } from "./services";
+import { authentication } from "./services";
 
 function App() {
   const windowSize = useWindowSize();
@@ -37,12 +37,13 @@ function App() {
     (async () => {
       try {
         showIsLoadingScreeen();
-        const user = await account.checkLogin((isState) => {
+        const user = await authentication.checkLogin((isState) => {
           dispatch(setIsLoggedIn(isState));
         });
-        dispatch(setCurrentUser(user));
+
+        dispatch(fetchUser(user.uid));
       } catch (error) {
-        console.log(error);
+        // không làm gì
       }
       hiddenIsLoadingScreen();
     })();

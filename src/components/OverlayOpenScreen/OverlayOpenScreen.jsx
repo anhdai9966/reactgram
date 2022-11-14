@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
-function OverlayScreen() {
+function OverlayOpenScreen() {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 0 }}
+      exit={{ opacity: 1 }}
       transition={{duration: .8}}
       className="fixed inset-0 z-50 bg-black/60"
     >
@@ -13,4 +13,4 @@ function OverlayScreen() {
   );
 }
 
-export default OverlayScreen;
+export default OverlayOpenScreen;

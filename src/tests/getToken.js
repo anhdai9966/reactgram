@@ -1,7 +1,18 @@
 import { initializeApp } from "firebase/app";
-import { collection, getFirestore, orderBy, onSnapshot, getDoc, getDocs, startAt } from "firebase/firestore/lite";
 import {
-  getAuth, onAuthStateChanged,
+  collection,
+  getFirestore,
+  orderBy,
+  onSnapshot,
+  getDoc,
+  getDocs,
+  startAt,
+  doc,
+} from "firebase/firestore/lite";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { equalTo, query } from "firebase/database";
 
@@ -24,16 +35,43 @@ const auth = getAuth(app);
 const email = "test@gmail.com";
 const password = "123456";
 
-async function test () {
-  const first = query(collection(db, 'users'), orderBy('username'), startAt('sontungmtp'))
-  const documentSnapshots = await getDocs(first);
-  console.log(documentSnapshots)
+async function tetsId() {
+  const docRef = doc(db, "users", "8k6UyaWzsAW6DQtgCIW23");
+
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log(docSnap.data());
+    } else {
+      console.log("Document does not exist");
+    }
+  } catch (error) {
+    console.log(error.code);
+  }
 }
 
+// tetsId();
+// tetsId();
+
+// async function test() {
+//   const first = query(
+//     collection(db, "users"),
+//     orderBy("username"),
+//     startAt("sontungmtp")
+//   );
+//   const documentSnapshots = await getDocs(first);
+//   console.log(documentSnapshots);
+// }
 
 // createUserWithEmailAndPassword(auth, "test@gmail.com", "12345")
 
-// createUserWithEmailAndPassword(auth, email, password);
+// function testCreate() {
+//   createUserWithEmailAndPassword(auth, email, password)
+//   .then((user) => console.log(user))
+//   .catch((err) => console.log(err));
+//   // auth/email-already-in-use
+// }
+
 // firebase.auth().createUserWithEmailAndPassword(email, password)
 //       .then((user) => loginUserSuccess(dispatch, user))
 //       .catch(() => createUserFail(dispatch));
@@ -49,9 +87,9 @@ async function test () {
 //     const errorMessage = error.message;
 //   });
 
-  // auth.signOut().then(user => {
-  //   console.log(user)
-  // })
+// auth.signOut().then(user => {
+//   console.log(user)
+// })
 // onAuthStateChanged(auth, (userCred) => {
 //   if (userCred) {
 //     userCred.getIdToken().then((token) => {

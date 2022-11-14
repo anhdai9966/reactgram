@@ -1,14 +1,13 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import images from "~/assets/images";
 import {
   IconEmoji,
-  IconLike,
   MoreIcon,
   IconBookmark,
   IconHeart,
   IconPaperplane,
   IconBubbleRight,
+  IconProfile,
 } from "~/components/UI/Icons";
 import { useBoolean, useOnClickOutside } from "~/hooks";
 import {
@@ -18,7 +17,12 @@ import {
 import DropLayout from "~/layouts/DropLayout";
 import Emoji from "~/components/Emoji";
 
-function Thread() {
+import moment from "moment";
+import "moment/locale/vi";
+import { setChangeCommentPost, setPosts } from "~/app/postSlice";
+moment.locale("vi");
+
+function Thread({ item }) {
   const dispatch = useDispatch();
 
   const handleClickMenuThread = () => {
@@ -53,16 +57,25 @@ function Thread() {
       : (e.target.style.height = "36px"); // leading 1.5 * 16 + px 6 * 2
   };
 
+  const handleChangeCommentValue = (id, ev) => {
+    dispatch(setChangeCommentPost({ id, value: ev.target.value }));
+  };
+
   return (
     <article className="w-full bg-white rounded-lg overflow-hidden pb-1 border text-sm font-light">
       <div className="w-full flex items-center px-3 h-14">
         <div className="w-full flex items-center gap-3">
           <div className="w-8 h-8 rounded-full overflow-hidden">
-            <img src={images.avatar} alt="avatar" />
+            {!!item.user.profile_pic_url && (
+              <img src={item.user.profile_pic_url} alt="avatar" />
+            )}
+            {!item.user.profile_pic_url && (
+              <IconProfile className="text-[#8c8c8c]" />
+            )}
           </div>
 
-          <Link to="/@ui_gradient" className="font-semibold">
-            ui_gradient
+          <Link to={`/${item.user.username}`} className="font-semibold">
+            {item.user.username}
           </Link>
         </div>
 
@@ -74,8 +87,8 @@ function Thread() {
         </button>
       </div>
 
-      <section>
-        <img src={images.post7} alt="imagepost" />
+      <section className="aspect-square w-full bg-slate-50">
+        <img src={item.image.url} alt="imagepost" loading="lazy" />
       </section>
 
       <section className="p-3 flex justify-between items-center">
@@ -108,61 +121,33 @@ function Thread() {
       </section>
 
       <section className="px-3 pb-2">
-        <p className="font-semibold">369 likes</p>
+        <p className="font-semibold">{item.like_count} likes</p>
       </section>
 
       <div className="flex flex-col gap-2 px-3">
         <div className="">
-          <p>
-            <Link to="@ui_gradient" className="font-semibold mr-2">
-              ui_gradient
-            </Link>
-            <span>
-              Here is a recipe for a music player widget using CSS grids 😁
-            </span>
-          </p>
-
-          <p>
-            A clean advantage of using grid is for the overlap case, the song
-            title element is laid over the same grid cell.
-          </p>
+          <Link to="@ui_gradient" className="font-semibold mr-2">
+            {item.user.username}
+          </Link>
+          <span>{item.caption}</span>
           <div className="flex gap-2">
-            ... <span className="text-[#939393]">Xem thêm</span>
+            ... <button className="text-[#939393]">Xem thêm</button>
           </div>
         </div>
 
-        <div>
-          <button onClick={handleClickIconComment} className="text-[#939393]">
-            Xem tất cả 4 bình luận
+        <div className="relative">
+          <button
+            onClick={handleClickIconComment}
+            className="text-[#939393] hover:text-[#8E8E93]"
+          >
+            Xem tất cả {item.comment_count} bình luận
           </button>
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <div className="flex justify-between items-center">
-            <p>
-              <Link to="/@aryanraj.code" className="font-semibold mr-2">
-                aryanraj.code
-              </Link>
-              <span>Looks awesome🔥🔥🔥🔥</span>
-            </p>
-            <IconLike className="w-3 h-3" />
-          </div>
-
-          <div className="flex justify-between items-center">
-            <p>
-              <Link to="/@baby_wolf_codes" className="font-semibold mr-2">
-                baby_wolf_codes
-              </Link>
-              <span>@aryanraj.code thanks 🙌🙌</span>
-            </p>
-            <IconLike className="w-3 h-3" />
-          </div>
         </div>
       </div>
 
       <section className="px-3 py-2">
         <p className="font-light uppercase text-[10px] text-[#939393]">
-          1 giờ trước
+          {moment(item.created_at).fromNow()}
         </p>
       </section>
 
@@ -176,7 +161,7 @@ function Thread() {
             </button>
             <DropLayout isShow={isShownEmoji} ref={emojiRef}>
               <div className="w-[330px] h-[330px]">
-                <Emoji setFalse={closeEmoji} />
+                <Emoji />
               </div>
             </DropLayout>
           </div>
@@ -184,8 +169,10 @@ function Thread() {
             <textarea
               rows="1"
               placeholder="Thêm bình luận"
-              className="resize-none outline-none w-full transition-all duration-300 ease-out overflow-hidden"
+              className="resize-none outline-none w-full h-9 transition-all duration-300 ease-out overflow-hidden pt-2"
               onKeyUp={handleAutoElementHeight}
+              onChange={(ev) => handleChangeCommentValue(item.id, ev)}
+              value={item.inputComment}
             ></textarea>
 
             <button className="px-3 py-1 font-semibold opacity-30 text-[#0095f6] hover:bg-black/5 rounded-lg">

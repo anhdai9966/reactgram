@@ -31,6 +31,40 @@
       "is_verified": true,
       "profile_pic_url": "/api/v1/users/1/files/8",
       "username": "lf.tlinh"
+    },
+    {
+      "biography": "💌Booking: andiez.namtruong@gmail.com\n✨Facebook: Nam Trương\n💥Fanpage: Andiez\nYoutube: Andiez Official\nTiktok: www.tiktok.com/@andiez02",
+      "bio_url": null,
+      "edge_followed_by": {
+        "count": 12913
+      },
+      "edge_follow": {
+        "count": 52
+      },
+      "follows_viewer": false,
+      "full_name": "Nam Trương",
+      "hide_like_and_view_counts": false,
+      "is_private": false,
+      "is_verified": false,
+      "profile_pic_url": "/api/v1/users/1/files/29",
+      "username": "andiez.namtruong"
+    },
+    {
+      "biography": "💌Xem MV Beautiful Monster tại đây:",
+      "bio_url": null,
+      "edge_followed_by": {
+        "count": 2387787
+      },
+      "edge_follow": {
+        "count": 25
+      },
+      "follows_viewer": false,
+      "full_name": "Sơn Hoàng Nguyễn",
+      "hide_like_and_view_counts": false,
+      "is_private": false,
+      "is_verified": true,
+      "profile_pic_url": "/api/v1/users/1/files/30",
+      "username": "soobin.hoangson"
     }
   ]
 }

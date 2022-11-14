@@ -29,6 +29,7 @@ import { useRef } from "react";
 
 function Axios() {
   const inputFileRef = useRef();
+
   const handleUpload = () => {
     const file = inputFileRef.current.files[0];
     const reader = new FileReader();
@@ -55,6 +56,7 @@ function Axios() {
     reader.readAsDataURL(file);
     reader.addEventListener("load", (event) => {
       const url = event.target.result;
+      console.log(url)
       fetch(url)
       .then(res => res.blob())
       .then(blob => {
@@ -73,3 +75,12 @@ function Axios() {
 }
 
 export default Axios;
+
+
+
+function blobToFile(theBlob, fileName) {
+  return new File([theBlob], fileName, {
+    lastModified: new Date().getTime(),
+    type: theBlob.type,
+  });
+}

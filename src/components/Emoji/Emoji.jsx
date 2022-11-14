@@ -1,10 +1,9 @@
 import { useCallback } from "react";
 import emojiData from "~/assets/data/emoji";
 
-function Emoji({ setFalse }) {
+function Emoji({ handleClick }) {
   const handleClickEmoji = useCallback((emoji) => {
-    console.log(emoji);
-    setFalse();
+    handleClick(emoji);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

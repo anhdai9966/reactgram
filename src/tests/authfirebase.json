@@ -1,29 +1,30 @@
-[{
-  "uid": "uuxwLoWsS1Vx4kkDVkq8q4W2Bkr1",
-  "email": "test@gmail.com",
-  "emailVerified": false,
-  "isAnonymous": false,
-  "providerData": [
+[
+  {
+    "uid": "uuxwLoWsS1Vx4kkDVkq8q4W2Bkr1",
+    "email": "test@gmail.com",
+    "emailVerified": false,
+    "isAnonymous": false,
+    "providerData": [
       {
-          "providerId": "password",
-          "uid": "test@gmail.com",
-          "displayName": null,
-          "email": "test@gmail.com",
-          "phoneNumber": null,
-          "photoURL": null
+        "providerId": "password",
+        "uid": "test@gmail.com",
+        "displayName": null,
+        "email": "test@gmail.com",
+        "phoneNumber": null,
+        "photoURL": null
       }
-  ],
-  "stsTokenManager": {
+    ],
+    "stsTokenManager": {
       "refreshToken": "AOEOulYqaYllAb02uqO54z6VZ7fU7e9tTFRK1ZbsO5okSL9SNLxAI4Lv0dQGEe4sIbnLW3VAB9b0wmBQM7XrFq5EOKtR9RGopqSNfhjwTtP5E3O_U7ImUCPauELLzeKp5VHA8cgMAOJVduZgeUtUXR_yxwjpXyVOaVs3p0EzhUxCVEz7RBIEYgulofm2Kc_avxmsNVFzRJ-3LQQ4BMJ2O1V5FHPjBPE4DQ",
       "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ3YjE5MTI0MGZjZmYzMDdkYzQ3NTg1OWEyYmUzNzgzZGMxYWY4OWYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcmVhY3Rqcy1hcGktYTMxYTMiLCJhdWQiOiJyZWFjdGpzLWFwaS1hMzFhMyIsImF1dGhfdGltZSI6MTY2Nzk5NzI2MSwidXNlcl9pZCI6InV1eHdMb1dzUzFWeDRra0RWa3E4cTRXMkJrcjEiLCJzdWIiOiJ1dXh3TG9Xc1MxVng0a2tEVmtxOHE0VzJCa3IxIiwiaWF0IjoxNjY3OTk3MjYxLCJleHAiOjE2NjgwMDA4NjEsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.JhU9Id9Mz7FpDNyfdioKAKW7wOwZOqIQ7hxOMI7N_wgUJMPgzlme5i9AxAH2FdUSIKP6CqWQAy1IWWVVwAX9YzMf8SkOfj-5OsFXq2aB2w1SLlr0wRALwa8fTKO6g7XL5BVc8ChdHRO0uvqZcr80A7Zv6dN0DH_vaZTsrZVfg1zk4uN7BB4fJC9JqW87jobXNsUJ8kHpojfcWRboAno1zbkYY6FQ5RZ_lOSrJIRppnCUntPxFkfcn5g-fOJ_fEP-IEzDw_PLkac6fzjoPOkWOKWJUVYsWVLQHcw0wqgMJPLznk0qsAPCpUmI4ViJHq2ArT1qHt6JgAkk7n3Vj9Khrg",
       "expirationTime": 1668000860720
+    },
+    "createdAt": "1666860290677",
+    "lastLoginAt": "1667997261534",
+    "apiKey": "AIzaSyAJ2MtskK33P1WWdsCn5KRz_XOHTQn13xE",
+    "appName": "[DEFAULT]"
   },
-  "createdAt": "1666860290677",
-  "lastLoginAt": "1667997261534",
-  "apiKey": "AIzaSyAJ2MtskK33P1WWdsCn5KRz_XOHTQn13xE",
-  "appName": "[DEFAULT]"
-},
-{
+  {
     "uid": "PXQXXwzgDSg6JNIBox5pb2Su7sf2",
     "email": "anhdai9966@gmail.com",
     "emailVerified": true,
@@ -31,23 +32,23 @@
     "isAnonymous": false,
     "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu0RxV6PUZNL4OfT-nMTMI6Q2XQhB6qr-0tfGagj=s96-c",
     "providerData": [
-        {
-            "providerId": "google.com",
-            "uid": "114332918375386289947",
-            "displayName": "Dai Lai",
-            "email": "anhdai9966@gmail.com",
-            "phoneNumber": null,
-            "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu0RxV6PUZNL4OfT-nMTMI6Q2XQhB6qr-0tfGagj=s96-c"
-        }
+      {
+        "providerId": "google.com",
+        "uid": "114332918375386289947",
+        "displayName": "Dai Lai",
+        "email": "anhdai9966@gmail.com",
+        "phoneNumber": null,
+        "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu0RxV6PUZNL4OfT-nMTMI6Q2XQhB6qr-0tfGagj=s96-c"
+      }
     ],
     "stsTokenManager": {
-        "refreshToken": "AOEOulbuuqginKY5eHVBVPhN1Svg4O3R8b0IcHvdyoHZZbbF93GCL1CVzPA29W8ObvZXnn1uDF_wUtZrZ_DWspFgy3U0A8u1W9Ik_BAYB95npIHCp_w38HgOb6xxYwloNUQqNzJZen8e6ihoya8UWaBa-39GMzUyNcYLImUjQXqdou5m2xMrEWfy-xLlDDfhBJyEpN91tHTtdz57FjhoJStX6i338fHOPkNTO_cEQirc4fUEDgVzMlvM73bodQwRPdG-BVaoaRhFgJndTdc2rJne2V7GphV8w1h9IisYdDgUIUaxOIXxYyINr-Et59i40xrJ5SY5B4DnK30dPwFHNwdnOIp91HGo8ZHbyxisYMnMirYbsiVAg0H-jjp3HL1T8u0mez3GHOB03fRnmI-wNOHDF2EtkSV8feJyxd5dH8hzximtHjXRSVQ",
-        "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ3YjE5MTI0MGZjZmYzMDdkYzQ3NTg1OWEyYmUzNzgzZGMxYWY4OWYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRGFpIExhaSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwUnhWNlBVWk5MNE9mVC1uTVRNSTZRMlhRaEI2cXItMHRmR2Fnaj1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9yZWFjdGpzLWFwaS1hMzFhMyIsImF1ZCI6InJlYWN0anMtYXBpLWEzMWEzIiwiYXV0aF90aW1lIjoxNjY4MDEyNTg5LCJ1c2VyX2lkIjoiUFhRWFh3emdEU2c2Sk5JQm94NXBiMlN1N3NmMiIsInN1YiI6IlBYUVhYd3pnRFNnNkpOSUJveDVwYjJTdTdzZjIiLCJpYXQiOjE2NjgwMTI1ODksImV4cCI6MTY2ODAxNjE4OSwiZW1haWwiOiJhbmhkYWk5OTY2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE0MzMyOTE4Mzc1Mzg2Mjg5OTQ3Il0sImVtYWlsIjpbImFuaGRhaTk5NjZAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.FIVAzpiGwogJUORNKDzpT4gdfdajirOxE7Db879xPznoZ-ZXEnDEofWPfXP7m84EO1dt5F0uEO_Ild-DQ-wPCh8ueoqCgUIQPD5GUoo8dJUQSgRRfrdJq84542mgO7PL01aL0-QF5irxeTk70du5y2emuEogNxVccYuOFcKzcEJIM6jYrVbfSD191ksNJsU7QHbJi_OtsRL2Vis5hN_FttKiscCwozkQ7bbz468QcAAI9JQIVTmKsLf8QzgCZNSi-_GVH9Civ0U9s8O8mVgirh63JniUX9Saw-6C5psVFDZz3ulFJfrh4YpzC6XvK3tWZk2X4jDnW58we3Zq-E2kpA",
-        "expirationTime": 1668016188274
+      "refreshToken": "AOEOulbuuqginKY5eHVBVPhN1Svg4O3R8b0IcHvdyoHZZbbF93GCL1CVzPA29W8ObvZXnn1uDF_wUtZrZ_DWspFgy3U0A8u1W9Ik_BAYB95npIHCp_w38HgOb6xxYwloNUQqNzJZen8e6ihoya8UWaBa-39GMzUyNcYLImUjQXqdou5m2xMrEWfy-xLlDDfhBJyEpN91tHTtdz57FjhoJStX6i338fHOPkNTO_cEQirc4fUEDgVzMlvM73bodQwRPdG-BVaoaRhFgJndTdc2rJne2V7GphV8w1h9IisYdDgUIUaxOIXxYyINr-Et59i40xrJ5SY5B4DnK30dPwFHNwdnOIp91HGo8ZHbyxisYMnMirYbsiVAg0H-jjp3HL1T8u0mez3GHOB03fRnmI-wNOHDF2EtkSV8feJyxd5dH8hzximtHjXRSVQ",
+      "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ3YjE5MTI0MGZjZmYzMDdkYzQ3NTg1OWEyYmUzNzgzZGMxYWY4OWYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRGFpIExhaSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwUnhWNlBVWk5MNE9mVC1uTVRNSTZRMlhRaEI2cXItMHRmR2Fnaj1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9yZWFjdGpzLWFwaS1hMzFhMyIsImF1ZCI6InJlYWN0anMtYXBpLWEzMWEzIiwiYXV0aF90aW1lIjoxNjY4MDEyNTg5LCJ1c2VyX2lkIjoiUFhRWFh3emdEU2c2Sk5JQm94NXBiMlN1N3NmMiIsInN1YiI6IlBYUVhYd3pnRFNnNkpOSUJveDVwYjJTdTdzZjIiLCJpYXQiOjE2NjgwMTI1ODksImV4cCI6MTY2ODAxNjE4OSwiZW1haWwiOiJhbmhkYWk5OTY2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE0MzMyOTE4Mzc1Mzg2Mjg5OTQ3Il0sImVtYWlsIjpbImFuaGRhaTk5NjZAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.FIVAzpiGwogJUORNKDzpT4gdfdajirOxE7Db879xPznoZ-ZXEnDEofWPfXP7m84EO1dt5F0uEO_Ild-DQ-wPCh8ueoqCgUIQPD5GUoo8dJUQSgRRfrdJq84542mgO7PL01aL0-QF5irxeTk70du5y2emuEogNxVccYuOFcKzcEJIM6jYrVbfSD191ksNJsU7QHbJi_OtsRL2Vis5hN_FttKiscCwozkQ7bbz468QcAAI9JQIVTmKsLf8QzgCZNSi-_GVH9Civ0U9s8O8mVgirh63JniUX9Saw-6C5psVFDZz3ulFJfrh4YpzC6XvK3tWZk2X4jDnW58we3Zq-E2kpA",
+      "expirationTime": 1668016188274
     },
     "createdAt": "1666310212046",
     "lastLoginAt": "1668012589678",
     "apiKey": "AIzaSyAJ2MtskK33P1WWdsCn5KRz_XOHTQn13xE",
     "appName": "[DEFAULT]"
-}
+  }
 ]

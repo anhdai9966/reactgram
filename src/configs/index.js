@@ -1,4 +1,10 @@
+export { axiosFirebaseConfig, axiosMediaConfig } from "./axiosConfig";
+export * from "./firebaseConfig";
+
 export const TIMEOUT_SEC = 10;
 
-export { default as axios } from './axiosConfig'
-export * from './firebase'
+// post
+export const LENGHT_CAPTION = 2000
+
+// file
+export const FILE_SIZE = 1

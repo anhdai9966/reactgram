@@ -5,13 +5,18 @@ import { LogoReactgram } from "~/components/UI/Logos";
 import images from "~/assets/images";
 import FooterLayout from "~/layouts/FooterLayout";
 import { useDocumentTitle } from "~/hooks";
-import { accountLogin } from "~/app/accountSlice";
+import {
+  fetchUser,
+  setLoadingAccount,
+  setLoggedMessages,
+} from "~/app/accountSlice";
 import { IconSpinner8SpinsWhite } from "~/components/UI/Icons";
 import { motion } from "framer-motion";
 import LoginWithGoogle from "~/components/LoginWithGoogle";
 import Or from "~/components/Or";
 import AnimateUpLayout from "~/layouts/AnimateUpLayout";
 import { isEmpty } from "~/utils";
+import { authentication } from "~/services";
 
 function PageLogin() {
   useDocumentTitle("Reactgram");
@@ -29,7 +34,16 @@ function PageLogin() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    dispatch(accountLogin(data));
+    const { email, password, isChecked } = data;
+    try {
+      dispatch(setLoadingAccount(true));
+      const res = await authentication.login(email, password, isChecked);
+
+      dispatch(fetchUser(res.user.uid));
+    } catch (error) {
+      dispatch(setLoggedMessages(error.code));
+    }
+    dispatch(setLoadingAccount(false));
   };
 
   const valueAllField = !watch("email") || !watch("password");

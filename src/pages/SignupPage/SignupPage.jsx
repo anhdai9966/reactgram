@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginWithGoogle from "~/components/LoginWithGoogle";
 import Or from "~/components/Or";
 import { IconSpinner8SpinsWhite } from "~/components/UI/Icons";
@@ -8,8 +8,14 @@ import AnimateUpLayout from "~/layouts/AnimateUpLayout";
 import FooterLayout from "~/layouts/FooterLayout";
 import { motion } from "framer-motion";
 import { isEmpty } from "~/utils";
+import { logout, signup } from "~/services/authenticationService";
+import users from "~/services/usersService";
+import { useState } from "react";
 
 function SignupPage() {
+  const navigate = useNavigate();
+  const [isLoadingCteateUser, setIsLoadingCreateUser] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -18,7 +24,24 @@ function SignupPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      setIsLoadingCreateUser(true);
+      // sign up with email and password
+      const resUser = await signup(data.email, data.password);
+      // create user to upload info user firestore
+      await logout()
+      const userData = {
+        ...resUser.user,
+        username: data.username,
+        displayName: data.full_name,
+      };
+      await users.createUser(userData);
+      navigate("/accounts/login");
+    } catch (error) {
+      // auth/email-already-in-use
+      console.log(error.code);
+    }
+    setIsLoadingCreateUser(false);
   };
 
   const valueAllField =
@@ -37,7 +60,7 @@ function SignupPage() {
                 <LogoReactgram className="h-12" />
               </div>
               <h1 className="text-center text-[#8c8c8c] font-light">
-                Đăng ký để xem ảnh và video từ bạn bè.
+                Đăng ký để xem ảnh từ bạn bè.
               </h1>
               <div className="">
                 <LoginWithGoogle className="bg-black/5" />
@@ -151,7 +174,7 @@ function SignupPage() {
                   <div className="font-light text-xs text-[#8c8c8c] text-center">
                     <p>
                       Bằng cách đăng ký, bạn đồng ý với Điều khoản, Chính sách
-                      quyền riêng tư và Chính sách của chúng tôi.
+                      quyền riêng tư của chúng tôi.
                     </p>
                   </div>
                 </div>
@@ -162,15 +185,13 @@ function SignupPage() {
                       valueAllField && "opacity-50"
                     }`}
                   >
-                    {false && (
+                    {isLoadingCteateUser && (
                       <div className="w-4 h-4 mx-auto">
                         <IconSpinner8SpinsWhite className="text-white animate-spinner12Spins" />
                       </div>
                     )}
-                    {true && (
-                      <span className="text-white font-semibold">
-                        Đăng nhập
-                      </span>
+                    {!isLoadingCteateUser && (
+                      <span className="text-white font-semibold">Đăng ký</span>
                     )}
                   </button>
                 </div>
@@ -196,7 +217,7 @@ function SignupPage() {
               Bạn có tài khoản?{" "}
               <Link
                 to="/accounts/login"
-                className="text-[#007AFF] font-semibold"
+                className="text-[#007AFF] font-semibold hover:underline"
               >
                 Đăng nhập
               </Link>

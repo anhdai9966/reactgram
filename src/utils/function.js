@@ -7,6 +7,13 @@ export function numberFormater(n, d) {
   return Math.round((n * d) / p(10, x)) / d + " KMGTPE"[x / 3];
 }
 
+export function humanFileSize(size) {
+  var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+  return `${(size / Math.pow(1024, i)).toFixed(2) * 1} ${
+    ["B", "kB", "MB", "GB", "TB"][i]
+  }`;
+}
+
 // ---- function definition ----
 export function selectFile(contentType, multiple = false) {
   return new Promise((resolve) => {
@@ -25,18 +32,43 @@ export function selectFile(contentType, multiple = false) {
   });
 }
 
-export async function dataUrlToFile(dataUrl, fileName, fileType = "image/png") {
-  const res = await fetch(dataUrl);
-  const blob = await res.blob();
-  return new File([blob], fileName, { type: fileType });
+export async function dataUrlToFile(
+  dataUrl,
+  fileName,
+  defaultType = "image/png"
+) {
+  if (typeof window === "undefined") return; // make sure we are in the browser
+
+  let response = await fetch(dataUrl);
+  let blob = await response.blob();
+
+  let metadata = {
+    type: blob.type || defaultType,
+  };
+
+  let file = new File([blob], fileName, metadata);
+  return file;
 }
 
 export function readFileToDataUrl(file) {
   return new Promise((resolve) => {
-    const reader = new FileReader()
-    reader.addEventListener('load', () => resolve(reader.result), false)
-    reader.readAsDataURL(file)
-  })
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result), false);
+    reader.readAsDataURL(file);
+  });
+}
+
+export function getWidthHeightImage(dataUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = dataUrl;
+    img.onload = () => {
+      resolve({
+        width: img.width,
+        height: img.height,
+      });
+    };
+  });
 }
 
 export function isEmpty(obj) {
