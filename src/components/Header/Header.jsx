@@ -40,6 +40,7 @@ import { useEffect } from "react";
 function Header() {
   const navigate = useNavigate();
   const { isShowClearAllRecentModal } = useSelector((state) => state.header);
+  const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const {
@@ -221,7 +222,7 @@ function Header() {
       Icon: <IconProfile />,
       IconActive: <IconProfileFill />,
       active: false,
-      to: "/@dailai3110",
+      to: '/@',
       onClick: (id, to) => {
         handleActiveNavigation(id);
         navigate(to);
@@ -230,6 +231,16 @@ function Header() {
       },
     },
   ]);
+
+  useEffect(() => {
+    setNavList(() =>
+      navList.map((nav) => {
+        if (nav.id === 7) nav.to = `/@${currentUser.username}`;
+        return nav;
+      })
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser])
 
   return (
     <div

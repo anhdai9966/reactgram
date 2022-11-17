@@ -39,7 +39,7 @@ function PostMediaModal({ setFalse }) {
   // comment_threading_enabled
   const [isBlockComment, setBlockComment] = useState(false);
 
-  const { currentUser } = useSelector((state) => state.account);
+  const { currentUser } = useSelector((state) => state.user);
 
   const [newPost, setNewPost] = useState({})
 

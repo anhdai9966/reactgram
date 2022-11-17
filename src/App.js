@@ -8,9 +8,9 @@ import {
   useBoolean,
 } from "~/hooks";
 import routes from "~/routes";
-import { fetchUser, setIsLoggedIn } from "./app/accountSlice";
+import { fetchUser, setIsLoggedIn } from "./app/userSlice";
 import LoadingScreen from "./components/LoadingScreen";
-import { authentication } from "./services";
+import { authentication, users } from "./services";
 
 function App() {
   const windowSize = useWindowSize();
@@ -24,7 +24,7 @@ function App() {
     doc.setAttribute("dir", "ltr");
   }, []);
 
-  const { isLoggedIn } = useSelector((state) => state.account);
+  const { isLoggedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const {
@@ -40,15 +40,23 @@ function App() {
         const user = await authentication.checkLogin((isState) => {
           dispatch(setIsLoggedIn(isState));
         });
-
-        dispatch(fetchUser(user.uid));
+        // kiểm tra user với firestore
+        const checkUser = await users.checkUserById(user.uid);
+        //  nếu chưa có thì tạo thông tin với firestore không thì lấy thông tin
+        if (!checkUser.data.check_id) {
+          const newResUser = await users.createUser(user);
+          dispatch(fetchUser(newResUser.data.data.user.uid));
+        } else {
+          dispatch(fetchUser(user.uid));
+        }
       } catch (error) {
+        console.log(error);
         // không làm gì
       }
       hiddenIsLoadingScreen();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn]);
+  }, []);
 
   const routing = useRoutes(routes(isLoggedIn));
 

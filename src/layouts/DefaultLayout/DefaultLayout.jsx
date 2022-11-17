@@ -11,7 +11,7 @@ import ToastLayout from "../Animate/ToastLayout";
 
 function DefaultLayout() {
   const { isShowLoginModal, isShowToast } = useSelector((state) => state.app);
-  const { isLoadingAccount } = useSelector((state) => state.account);
+  const { isLoadingAccount } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const isShownNotificationModal = false;

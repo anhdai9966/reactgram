@@ -52,14 +52,14 @@ function SignupPage() {
 
   return (
     <FooterLayout>
-      <AnimateUpLayout className="">
+      <AnimateUpLayout>
         <div className="space-y-5 mt-9 mb-9">
           <div className="border bg-white rounded-lg w-96 mx-auto p-9 space-y-2">
             <div className="space-y-3">
               <div className="mt-9 mb-3">
                 <LogoReactgram className="h-12" />
               </div>
-              <h1 className="text-center text-[#8c8c8c] font-light">
+              <h1 className="text-center text-sm text-[#8c8c8c] font-light">
                 Đăng ký để xem ảnh từ bạn bè.
               </h1>
               <div className="">
@@ -88,7 +88,9 @@ function SignupPage() {
                   <input
                     type="text"
                     id="emailInput"
-                    className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1 w-full"
+                    className={`relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 w-full ${
+                      !!watch("email") && "pt-1"
+                    }`}
                     {...register("email", {
                       required: "Bạn phải nhập email",
                       pattern: {
@@ -117,7 +119,9 @@ function SignupPage() {
                       required: true,
                     })}
                     id="fullNameInput"
-                    className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1 w-full"
+                    className={`relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 w-full ${
+                      !!watch("full_name") && "pt-1"
+                    }`}
                   />
                 </div>
                 <div className="relative text-xs">
@@ -137,7 +141,9 @@ function SignupPage() {
                       required: true,
                     })}
                     id="usernameInput"
-                    className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1  w-full"
+                    className={`relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 w-full ${
+                      !!watch("username") && "pt-1"
+                    }`}
                   />
                 </div>
                 <div className="relative text-xs">
@@ -161,7 +167,9 @@ function SignupPage() {
                       },
                     })}
                     id="passwordInput"
-                    className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1  w-full"
+                    className={`relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 w-full ${
+                      !!watch("password") && "pt-1"
+                    }`}
                   />
                 </div>
                 <div className="space-y-5">

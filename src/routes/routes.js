@@ -14,6 +14,7 @@ import AccountsPage from "~/pages/AccountsPage";
 import EditAccount from "~/pages/AccountsPage/components/EditAccount";
 import ChangePassword from "~/pages/AccountsPage/components/ChangePassword";
 import SignupPage from "~/pages/SignupPage";
+import ErrorPage from "~/pages/ErrorPage";
 
 const routes = (isLoggedIn) => [
   {
@@ -51,7 +52,7 @@ const routes = (isLoggedIn) => [
         ],
       },
       {
-        path: "/@:userId",
+        path: "/@:username",
         element: <UserPage />,
         children: [
           { path: "", element: <Grid /> },
@@ -59,6 +60,8 @@ const routes = (isLoggedIn) => [
           { path: "tagged", element: <Tagged /> },
         ],
       },
+      { path: "/error", element: <ErrorPage /> },
+      { path: "/*", element: <Navigate to="/error" /> },
       { path: "/", element: <Navigate to="/app" /> },
     ],
   },

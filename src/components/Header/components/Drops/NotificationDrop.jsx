@@ -1,12 +1,17 @@
 import { IconBellCircle } from "~/components/UI/Icons";
 import AnimateUpLayout from "~/layouts/AnimateUpLayout";
+import NotificationItem from "./components/NotificationItem";
 
 function NotificationDrop() {
   return (
     <AnimateUpLayout delay={0.1}>
-      <div className="px-4 py-6 flex flex-col gap-8">
-        <h2 className="font-semibold text-xl">Thông báo</h2>
-        <div>
+      <div className="">
+        <h2 className="font-semibold text-xl px-4 py-6">Thông báo</h2>
+        <div className="">
+          <h3 className="px-4">Hôm nay</h3>
+          <NotificationItem />
+        </div>
+        <div className="px-4">
           <div className="py-4">
             <IconBellCircle className="w-12 h-12 mx-auto text-[#8c8c8c]" />
           </div>

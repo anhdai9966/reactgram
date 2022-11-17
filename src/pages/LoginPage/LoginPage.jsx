@@ -1,28 +1,28 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { LogoReactgram } from "~/components/UI/Logos";
-import images from "~/assets/images";
-import FooterLayout from "~/layouts/FooterLayout";
+import { motion } from "framer-motion";
+import { isEmpty } from "~/utils";
+import { authentication } from "~/services";
 import { useDocumentTitle } from "~/hooks";
 import {
   fetchUser,
   setLoadingAccount,
   setLoggedMessages,
-} from "~/app/accountSlice";
+} from "~/app/userSlice";
+import images from "~/assets/images";
+import FooterLayout from "~/layouts/FooterLayout";
+import AnimateUpLayout from "~/layouts/AnimateUpLayout";
+import { LogoReactgram } from "~/components/UI/Logos";
 import { IconSpinner8SpinsWhite } from "~/components/UI/Icons";
-import { motion } from "framer-motion";
 import LoginWithGoogle from "~/components/LoginWithGoogle";
 import Or from "~/components/Or";
-import AnimateUpLayout from "~/layouts/AnimateUpLayout";
-import { isEmpty } from "~/utils";
-import { authentication } from "~/services";
 
-function PageLogin() {
+function LoginPage() {
   useDocumentTitle("Reactgram");
   const dispatch = useDispatch();
   const { isLoadingAccount, isLoggedMessage } = useSelector(
-    (state) => state.account
+    (state) => state.user
   );
   // auth/wrong-password
   // auth/user-not-found
@@ -96,7 +96,9 @@ function PageLogin() {
                               ? "#FF3B30"
                               : "#d1d5db",
                         }}
-                        className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1 w-full"
+                        className={`relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 w-full ${
+                          !!watch("email") && "pt-1"
+                        }`}
                         {...register("email", {
                           required: "Email is required",
                           pattern: {
@@ -135,7 +137,9 @@ function PageLogin() {
                               ? "#FF3B30"
                               : "#d1d5db",
                         }}
-                        className="relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 pt-1  w-full"
+                        className={`relative outline-none border border-gray-300 rounded bg-black/5 h-8 px-2 w-full ${
+                          !!watch("password") && "pt-1"
+                        }`}
                       />
                     </div>
                     <label className="w-fit flex gap-2 items-center ml-1 cursor-pointer">
@@ -225,4 +229,4 @@ function PageLogin() {
   );
 }
 
-export default PageLogin;
+export default LoginPage;

@@ -1,9 +1,17 @@
-import { axiosFirebaseConfig } from "~/configs";
+import { axiosFirebaseConfig, ROLE } from "~/configs";
 
 const users = {
-  getUser(userId) {
+  getUserById(userId) {
     try {
       const url = `/users/${userId}`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
+  getUsername(username) {
+    try {
+      const url = `/users/username/${username}`;
       return axiosFirebaseConfig.get(url);
     } catch (error) {
       throw error;
@@ -21,22 +29,33 @@ const users = {
     try {
       const url = `/users`;
       const user = {
+        id: data.uid,
         uid: data.uid,
         email: data.email,
         emailVerified: data.emailVerified,
         full_name: data.displayName,
-        photoURL: null,
-        createdAt: data.createdAt,
-        updatedAt: null,
-        apiKey: data.apiKey,
+        username: data.username,
+        profile_pic_url: null,
         biography: null,
         bio_url: null,
+        role: ROLE,
+        gender: {
+          type: 3,
+          custom: null,
+        },
+        follow: {
+          count: 0,
+        },
+        followed_by: {
+          count: 0,
+        },
+        posts: {
+          count: 0,
+        },
         follows_viewer: false,
         hide_like_and_view_counts: false,
         is_private: false,
         is_verified: false,
-        profile_pic_url: null,
-        username: data.username,
       };
       return axiosFirebaseConfig.post(url, user);
     } catch (error) {

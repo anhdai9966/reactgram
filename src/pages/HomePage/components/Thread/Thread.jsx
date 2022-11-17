@@ -16,10 +16,11 @@ import {
 } from "../../HomeSlice";
 import DropLayout from "~/layouts/DropLayout";
 import Emoji from "~/components/Emoji";
+import { addEmojiCommentPost, setChangeCommentPost } from "~/app/postSlice";
 
 import moment from "moment";
 import "moment/locale/vi";
-import { setChangeCommentPost, setPosts } from "~/app/postSlice";
+import CommentItem from "../CommentItem";
 moment.locale("vi");
 
 function Thread({ item }) {
@@ -39,7 +40,7 @@ function Thread({ item }) {
   const {
     state: isShownEmoji,
     setFalse: closeEmoji,
-    setTrue: shownEmoji,
+    toggle: toggleEmoji,
   } = useBoolean();
 
   const emojiRef = useOnClickOutside(() => {
@@ -47,7 +48,11 @@ function Thread({ item }) {
   });
 
   const handleClickBtnEmoji = () => {
-    shownEmoji();
+    toggleEmoji();
+  };
+
+  const handleClickEmoji = (id, emoji) => {
+    dispatch(addEmojiCommentPost({ id, emoji }));
   };
 
   // xử lý auto height
@@ -61,18 +66,24 @@ function Thread({ item }) {
     dispatch(setChangeCommentPost({ id, value: ev.target.value }));
   };
 
+  const handleClickPostComment = (id, uid, commentText) => {
+    console.log(id, uid, commentText)
+  };
+
   return (
     <article className="w-full bg-white rounded-lg overflow-hidden pb-1 border text-sm font-light">
       <div className="w-full flex items-center px-3 h-14">
         <div className="w-full flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full overflow-hidden">
-            {!!item.user.profile_pic_url && (
-              <img src={item.user.profile_pic_url} alt="avatar" />
-            )}
-            {!item.user.profile_pic_url && (
-              <IconProfile className="text-[#8c8c8c]" />
-            )}
-          </div>
+          <Link to={`/${item.user.username}`}>
+            <div className="w-8 h-8 rounded-full overflow-hidden">
+              {!!item.user.profile_pic_url && (
+                <img src={item.user.profile_pic_url} alt="avatar" />
+              )}
+              {!item.user.profile_pic_url && (
+                <IconProfile className="text-[#8c8c8c]" />
+              )}
+            </div>
+          </Link>
 
           <Link to={`/${item.user.username}`} className="font-semibold">
             {item.user.username}
@@ -145,6 +156,12 @@ function Thread({ item }) {
         </div>
       </div>
 
+      <div className="">
+        {item.comments.map((comm) => (
+          <CommentItem item={comm} />
+        ))}
+      </div>
+
       <section className="px-3 py-2">
         <p className="font-light uppercase text-[10px] text-[#939393]">
           {moment(item.created_at).fromNow()}
@@ -153,19 +170,21 @@ function Thread({ item }) {
 
       <section className="border-t hidden md:block">
         <div className="flex items-center">
-          <div className="relative">
+          <div className="relative" ref={emojiRef}>
             <button onClick={handleClickBtnEmoji} className="flex-shrink-0 p-3">
               <div className="w-6 h-6">
                 <IconEmoji />
               </div>
             </button>
-            <DropLayout isShow={isShownEmoji} ref={emojiRef}>
+            <DropLayout isShow={isShownEmoji} className="left-3">
               <div className="w-[330px] h-[330px]">
-                <Emoji />
+                <Emoji
+                  handleClick={(emoji) => handleClickEmoji(item.id, emoji)}
+                />
               </div>
             </DropLayout>
           </div>
-          <form className="w-full flex items-center flex-grow px-1">
+          <div className="w-full flex items-center flex-grow px-1">
             <textarea
               rows="1"
               placeholder="Thêm bình luận"
@@ -175,10 +194,17 @@ function Thread({ item }) {
               value={item.inputComment}
             ></textarea>
 
-            <button className="px-3 py-1 font-semibold opacity-30 text-[#0095f6] hover:bg-black/5 rounded-lg">
+            <button
+              onClick={() =>
+                handleClickPostComment(item.id, item.uid, item.inputComment)
+              }
+              className={`px-3 py-1 font-semibold text-[#0095f6] hover:bg-black/5 rounded-lg ${
+                !item.inputComment && "opacity-30"
+              }`}
+            >
               Đăng
             </button>
-          </form>
+          </div>
         </div>
       </section>
     </article>

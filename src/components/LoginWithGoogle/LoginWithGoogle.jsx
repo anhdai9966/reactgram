@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { fetchUser } from "~/app/accountSlice";
+import { fetchUser } from "~/app/userSlice";
 import { LogoGoogle } from "~/components/UI/Logos";
 import { authentication } from "~/services";
 import users from "~/services/usersService";

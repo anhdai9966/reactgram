@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLoadingAccount, setLogOut } from "~/app/accountSlice";
+import { setLoadingAccount, setLogOut } from "~/app/userSlice";
 import { setShowLoginModal } from "~/app/appSlice";
 import { IconBookmark, IconGear } from "~/components/UI/Icons";
 import { logout } from "~/services/authenticationService";
-import DropMenuItem from "./components/MenuItem";
+import MenuItemDrop from "./components/MenuItemDrop";
 
 function MenuDrop() {
   const dispatch = useDispatch();
@@ -67,13 +67,13 @@ function MenuDrop() {
     <div className="py-1 w-[240px] overflow-y-auto rounded-lg bg-white border shadow-lg">
       <ul className="flex flex-col font-light text-[#262626] divide-y">
         {listMenuTop.current.map((item, index) => (
-          <DropMenuItem key={index} item={item} />
+          <MenuItemDrop key={index} item={item} />
         ))}
 
         <div className="h-1 bg-gray-100"></div>
 
         {listMenuButton.current.map((item, index) => (
-          <DropMenuItem key={index} item={item} />
+          <MenuItemDrop key={index} item={item} />
         ))}
       </ul>
     </div>

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { IconSpinner8Spins } from "~/components/UI/Icons";
 
-function DropMenuItem({ item }) {
-  const { isLoadingAccount } = useSelector((state) => state.account);
+function MenuItemDrop({ item }) {
+  const { isLoadingAccount } = useSelector((state) => state.user);
 
   const { title, Icon, to, onClick, iconAction = false } = item;
 
@@ -26,4 +26,4 @@ function DropMenuItem({ item }) {
   );
 }
 
-export default DropMenuItem;
+export default MenuItemDrop;

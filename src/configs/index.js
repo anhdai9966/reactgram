@@ -8,3 +8,6 @@ export const LENGHT_CAPTION = 2000
 
 // file
 export const FILE_SIZE = 1
+
+// user
+export const ROLE = 10

@@ -1,84 +1,82 @@
+import { useForm } from "react-hook-form";
 import { IconProfile } from "~/components/UI/Icons";
+import InputItem from "../InputItem";
 
 function ChangePassword() {
+  const { register, handleSubmit, watch } = useForm({
+    defaultValues: {
+      email: "dailai3110@gmail.com",
+    },
+  });
+
+  const onSubmit = (data) => console.log(data);
+
   return (
-    <article className="py-8 space-y-4">
-      <div className="flex items-center">
-        <div className="w-32 shrink-0 mx-8">
-          <div className="w-9 h-9 border rounded-full overflow-hidden ml-auto">
+    <article className="py-8 space-y-6">
+      <div className="flex gap-4 lg:gap-6 px-2 items-center">
+        <div className="px-2 h-8 flex items-center lg:justify-end lg:w-36 shrink-0">
+          <div className="w-9 h-9 border rounded-full overflow-hidden">
             <IconProfile className="text-[#8c8c8c]/60" />
           </div>
         </div>
-        <div className="">
+        <div className="w-full max-w-sm space-y-2">
           <h2 className="text-lg">laidai9966</h2>
         </div>
       </div>
-      <form className="font-light space-y-4">
-        <div className="flex">
-          <div className="w-32 h-8 flex items-center justify-end shrink-0 mx-8">
-            <label htmlFor="pepUsername" className="font-semibold">
-              Mật khẩu cũ
-            </label>
-          </div>
-          <div className="space-y-3 max-w-sm w-full">
-            <input
-              type="text"
-              name="oldPassword"
-              id="pepOldPassword"
-              placeholder="Mật khẩu cũ"
-              className="block border rounded h-8 w-full px-2 outline-none bg-[#fafafa]"
-            />
-            <p className="text-xs text-[#8c8c8c]"></p>
-          </div>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="font-light space-y-6 px-2"
+      >
+        <div className="">
+          <InputItem
+            register={register("old_password")}
+            type="password"
+            placeholder="Mật khẩu cũ"
+            title="Mật khẩu cũ"
+          />
         </div>
-        <div className="flex">
-          <div className="w-32 h-8 flex items-center justify-end shrink-0 mx-8">
-            <label htmlFor="pepUsername" className="font-semibold">
-              Mật khẩu mới
-            </label>
-          </div>
-          <div className="space-y-3 max-w-sm w-full">
-            <input
-              type="password"
-              name="newPassword"
-              id="pepNewPassword"
-              placeholder="Mật khẩu mới"
-              className="block border rounded h-8 w-full px-2 outline-none bg-[#fafafa]"
-            />
-            <p className="text-xs text-[#8c8c8c]"></p>
-          </div>
+
+        <div className="">
+          <InputItem
+            register={register("new_password")}
+            type="password"
+            placeholder="Mật khẩu mới"
+            title="Mật khẩu mới"
+          />
         </div>
-        <div className="flex">
-          <div className="w-32 h-8 flex items-center justify-end shrink-0 mx-8">
-            <label htmlFor="pepUsername" className="font-semibold text-end">
-              Xác nhận mật khẩu mới
-            </label>
-          </div>
-          <div className="space-y-3 max-w-sm w-full">
-            <input
-              type="password"
-              name="confirmNewPassword"
-              id="pepConfirmNewPassword"
-              placeholder="Xác nhận mật khẩu mới"
-              className="block border rounded h-8 w-full px-2 outline-none bg-[#fafafa]"
-            />
-            <p className="text-xs text-[#8c8c8c]"></p>
-          </div>
+
+        <div className="">
+          <InputItem
+            register={register("confirm_new_password")}
+            type="password"
+            placeholder="Xác nhận mật khẩu mới"
+            title="Xác nhận mật khẩu mới"
+          />
         </div>
-        <div className="flex">
-          <div className="w-32 h-8 flex items-center justify-end shrink-0 mx-8"></div>
-          <div className="space-y-3 max-w-sm w-full">
-            <div className="">
-              <button className="font-semibold text-white bg-[#007AFF] rounded-md px-3 py-1">
-                Đổi mật khẩu
-              </button>
-            </div>
-            <div>
-              <button className="text-[#007AFF] font-semibold text-sm hover:bg-black/[5%] px-2 py-1 rounded-md">
-                Quên mật khẩu
-              </button>
-            </div>
-          </div>
+
+        <div className="">
+          <InputItem
+            text={
+              <div className="">
+                <button className="font-semibold text-white bg-[#007AFF] rounded-md py-1 w-36">
+                  <span className="px-3">Đổi mật khẩu</span>
+                </button>
+              </div>
+            }
+          />
+        </div>
+
+        <div className="">
+          <InputItem
+            text={
+              <div className="">
+                <button className="font-semibold bg-white text-[#007AFF] hover:bg-black/[5%] rounded-md py-1 w-36">
+                  <span className="px-3">Quên mật khẩu</span>
+                </button>
+              </div>
+            }
+          />
         </div>
       </form>
     </article>

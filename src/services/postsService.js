@@ -1,10 +1,18 @@
+import { v4 } from "uuid";
 import { axiosFirebaseConfig } from "~/configs";
 
 const posts = {
-  getPostsById(uid) {
+  getPostById(id) {
+    try {
+      const url = `/post/${id}`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
+  getPostsByUserId(uid) {
     try {
       const url = `/posts/${uid}`;
-
       return axiosFirebaseConfig.get(url);
     } catch (error) {
       throw error;
@@ -13,7 +21,6 @@ const posts = {
   getAllPosts() {
     try {
       const url = `/posts`;
-
       return axiosFirebaseConfig.get(url);
     } catch (error) {
       throw error;
@@ -22,18 +29,18 @@ const posts = {
   createPost(data) {
     try {
       const url = `/posts`;
+      const idv4 = v4()
       const post = {
+        id: idv4,
         uid: data.uid,
-        like_and_view_counts_disabled: data.like_and_view_counts_disabled,
-        comment_threading_disabled: data.comment_threading_disabled,
-        comment_count: 0,
-        like_count: 0,
         image: data.image,
         caption: data.caption,
-        created_at: new Date().getTime(),
-        updated_at: null,
+        comment_count: 0,
+        like_count: 0,
         caption_is_edited: false,
         location: data.province,
+        like_and_view_counts_disabled: data.like_and_view_counts_disabled,
+        comment_threading_disabled: data.comment_threading_disabled,
         user: {
           uid: data.uid,
           username: data.username,
@@ -43,7 +50,6 @@ const posts = {
           is_verified: data.is_verified,
         },
       };
-
       return axiosFirebaseConfig.post(url, post);
     } catch (error) {
       throw error;

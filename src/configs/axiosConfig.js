@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const axiosFirebaseConfig = axios.create({
-  baseURL: "http://127.0.0.1:5001/reactjs-api-a31a3/us-central1/app",
+  baseURL:
+    process.env.REACT_APP_FIREBASE_API ||
+    "https://us-central1-reactjs-api-a31a3.cloudfunctions.net/app",
   headers: { "Content-Type": "application/json" },
 });
 

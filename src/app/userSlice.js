@@ -1,31 +1,26 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { users } from "~/services";
 
-export const fetchUser = createAsyncThunk(
-  "account/accountLogin",
-  async (userId, thunkAPI) => {
-    try {
-      const resUser = await users.getUser(userId);
+export const fetchUser = createAsyncThunk("user/user", async (userId) => {
+  try {
+    const resUser = await users.getUserById(userId);
 
-      return resUser.data.data.user;
-    } catch (error) {
-      console.log(error);
-      // console.log(error.message);
-      // const errorCode = error.code;
-      // throw thunkAPI.rejectWithValue(errorCode);
-    }
+    return resUser.data.data.user;
+  } catch (error) {
+    console.log(error);
   }
-);
+});
 
 const initialState = {
   isLoadingAccount: false,
   isLoggedIn: false,
   isLoggedMessage: "",
   currentUser: {},
+  isLoadingScreen: false,
 };
 
 const accountSlice = createSlice({
-  name: "account",
+  name: "user",
   initialState,
   reducers: {
     setIsLoggedIn(state, action) {
@@ -44,6 +39,9 @@ const accountSlice = createSlice({
       state.isLoggedIn = false;
       state.isLoadingAccount = false;
       state.currentUser = {};
+    },
+    setIsLoadingScreen(state, action) {
+      state.isLoadingScreen = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -64,5 +62,6 @@ export const {
   setLoadingAccount,
   setCurrentUser,
   setLogOut,
+  setIsLoadingScreen,
 } = accountSlice.actions;
 export default accountSlice.reducer;
