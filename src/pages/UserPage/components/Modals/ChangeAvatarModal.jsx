@@ -1,20 +1,22 @@
 import { useRef } from "react";
 
-function ChangeAvatarModal({ setFalse }) {
+function ChangeAvatarModal({ setFalse, handleUpload, handleRemove }) {
   const btnList = useRef([
     {
       id: 0,
-      title: (
-        <span className="text-[#007AFF] font-semibold">Tải ảnh lên</span>
-      ),
-      onClick: () => {},
+      title: <span className="text-[#007AFF] font-semibold">Tải ảnh lên</span>,
+      onClick: () => {
+        handleUpload();
+      },
     },
     {
       id: 1,
       title: (
         <span className="text-[#FF3B30] font-semibold">Gỡ ảnh hiện tại</span>
       ),
-      onClick: () => {},
+      onClick: () => {
+        handleRemove()
+      },
     },
     {
       id: 2,

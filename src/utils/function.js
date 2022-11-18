@@ -75,6 +75,46 @@ export function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
+export function getLocationFromHref(href) {
+  var l = document.createElement("a");
+  l.href = href;
+  return `${l.hostname}/${l.pathname}`;
+}
+
+export function toSlug(str) {
+  // Chuyển hết sang chữ thường
+  str = str.toLowerCase();
+
+  // xóa dấu
+  str = str
+    .normalize("NFD") // chuyển chuỗi sang unicode tổ hợp
+    .replace(/[\u0300-\u036f]/g, ""); // xóa các ký tự dấu sau khi tách tổ hợp
+
+  // Thay ký tự đĐ
+  str = str.replace(/[đĐ]/g, "d");
+
+  // Xóa ký tự đặc biệt
+  str = str.replace(/([^0-9a-z-\s])/g, "");
+
+  // Xóa khoảng trắng thay bằng ký tự -
+  // str = str.replace(/(\s+)/g, "-");
+
+  // Xóa ký tự - liên tiếp
+  // str = str.replace(/-+/g, "-");
+
+  // Xóa ký tự - liên tiếp
+  str = str.replace(/\s\s+/g, " ");
+
+  // xóa phần dư - ở đầu & cuối
+  // str = str.replace(/^-+|-+$/g, "");
+
+  // xoas khoang trang 2 dau
+  str = str.trim();
+
+  // return
+  return str;
+}
+
 // const getImageUrl = async () => {
 //   const dataUrl = editor.getImage().toDataURL()
 //   const result = await fetch(dataUrl)

@@ -17,10 +17,42 @@ const users = {
       throw error;
     }
   },
+  getUsersByKeyword(keyword) {
+    try {
+      const url = `/users/search/${keyword}`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
+  getUsersResent(uid) {
+    try {
+      const url = `/users/resent/${uid}`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
   checkUserById(userId) {
     try {
       const url = `/users/check_id/${userId}`;
       return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateProfilePicUser(userId, data) {
+    try {
+      const url = `/users/profile_pic/${userId}`;
+      return axiosFirebaseConfig.put(url, data);
+    } catch (error) {
+      throw error;
+    }
+  },
+  updateProfile(userId, data) {
+    try {
+      const url = `/users/${userId}`;
+      return axiosFirebaseConfig.put(url, data);
     } catch (error) {
       throw error;
     }
@@ -34,14 +66,15 @@ const users = {
         email: data.email,
         emailVerified: data.emailVerified,
         full_name: data.displayName,
-        username: data.username,
+        full_name_code: data.displayName.toLowerCase(),
+        username: data.username.toLowerCase(),
         profile_pic_url: null,
         biography: null,
         bio_url: null,
         role: ROLE,
         gender: {
           type: 3,
-          custom: null,
+          custom: "Không muốn tiết lộ",
         },
         follow: {
           count: 0,

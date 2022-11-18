@@ -5,6 +5,7 @@ import PageHomeReducer from "~/pages/HomePage/HomeSlice";
 import userReducer from "./userSlice";
 import postReducer from "./postSlice";
 import userPageReducer from "~/pages/UserPage/userPageSlice";
+import exploreReducer from "~/pages/ExplorePage/exploreSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     header: HeaderReducer,
     pageHome: PageHomeReducer,
     userPage: userPageReducer,
+    explore: exploreReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

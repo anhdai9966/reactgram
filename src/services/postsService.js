@@ -18,6 +18,14 @@ const posts = {
       throw error;
     }
   },
+  getPostsByExplore(uid) {
+    try {
+      const url = `/posts/explore/${uid}`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
   getAllPosts() {
     try {
       const url = `/posts`;

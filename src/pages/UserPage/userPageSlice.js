@@ -16,9 +16,11 @@ export const fetchUsername = createAsyncThunk(
 );
 
 const initialState = {
+  isStatusUserPage: false,
   userPage: {},
   isLoadingUserPage: false,
   isMessageUserPage: "",
+  isLoadingProfilePic: false,
 };
 
 const userPageSlice = createSlice({
@@ -36,10 +38,12 @@ const userPageSlice = createSlice({
     builder.addCase(fetchUsername.fulfilled, (state, action) => {
       state.isLoadingUserPage = false;
       state.userPage = action.payload;
+      state.isStatusUserPage = true;
     });
     builder.addCase(fetchUsername.rejected, (state, action) => {
       state.isLoadingUserPage = false;
       state.isMessageUserPage = action.payload;
+      state.isStatusUserPage = false;
     });
   },
 });

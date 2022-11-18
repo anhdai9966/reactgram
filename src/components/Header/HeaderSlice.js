@@ -1,16 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { users } from "~/services";
+
+export const fetchUsersByKeyWord = createAsyncThunk(
+  "header/fetchUserByKeyWord",
+  async (keyword) => {
+    const res = await users.getUsersByKeyword(keyword);
+
+    return res.data.data.users;
+  }
+);
+
+export const fetchUsersResent = createAsyncThunk(
+  "header/fetchUserResent",
+  async (uid) => {
+    const res = await users.getUsersResent(uid);
+
+    return res.data.data.users;
+  }
+);
 
 const initialState = {
-  isShowClearAllRecentModal: false,
-  //
-  isToggleDropdownMenuProfile: false,
-  isToggleDropdownListSearch: false,
-  isToggleDropdownListNotification: false,
-
-  isOpenModalPostMedia: false,
-
+  searchs: [],
+  recents: [],
   isLoadingSearch: false,
-  isToggleSubSidebar: false,
+  isShowClearAllRecentModal: false,
 };
 
 const headerSlice = createSlice({
@@ -20,44 +33,35 @@ const headerSlice = createSlice({
     setIsShowClearAllRecentModal(state, action) {
       state.isShowClearAllRecentModal = action.payload;
     },
-    // 
-    setHiddenAllDropdownHeader(state) {
-      state.isToggleDropdownMenuProfile = false;
-      state.isToggleDropdownListSearch = false;
-      state.isToggleDropdownListNotification = false;
-    },
-    setHiddenAllModalHeader(state) {
-      state.isOpenModalPostMedia = false;
-      state.isToggleModalClearAllRecent = false;
-    },
-    setShownDropdownMenuProfile(state) {
-      state.isToggleDropdownMenuProfile = true;
-    },
-    setShownDropdownListSearch(state) {
-      state.isToggleDropdownListSearch = true;
-    },
-    setShownDropdownListNotification(state) {
-      state.isToggleDropdownListNotification = true;
-    },
-    setShownModalPostMedia(state) {
-      state.isOpenModalPostMedia = true;
-    },
     setIsLoading(state, action) {
       state.isLoadingSearch = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchUsersByKeyWord.pending, (state, action) => {
+      state.isLoadingSearch = true;
+    });
+    builder.addCase(fetchUsersByKeyWord.fulfilled, (state, action) => {
+      state.isLoadingSearch = false;
+      state.searchs = action.payload;
+    });
+    builder.addCase(fetchUsersByKeyWord.rejected, (state, action) => {
+      state.isLoadingSearch = false;
+    });
+    builder.addCase(fetchUsersResent.pending, (state, action) => {
+      state.isLoadingSearch = true;
+    });
+    builder.addCase(fetchUsersResent.fulfilled, (state, action) => {
+      state.isLoadingSearch = false;
+      state.recents = action.payload;
+    });
+    builder.addCase(fetchUsersResent.rejected, (state, action) => {
+      state.isLoadingSearch = false;
+    });
+  },
 });
 
-export const {
-  setIsShowClearAllRecentModal,
-  //
-  setHiddenAllDropdownHeader,
-  setHiddenAllModalHeader,
-  setShownDropdownMenuProfile,
-  setShownDropdownListSearch,
-  setIsLoading,
-  setShownDropdownListNotification,
-  setShownModalPostMedia,
-} = headerSlice.actions;
+export const { setIsShowClearAllRecentModal, setIsLoading } =
+  headerSlice.actions;
 
 export default headerSlice.reducer;

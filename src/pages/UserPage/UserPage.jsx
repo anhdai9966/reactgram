@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Outlet, useNavigate } from "react-router-dom";
+import { v4 } from "uuid";
 import {
   IconGrid,
   IconGear,
@@ -20,27 +21,32 @@ import {
 } from "~/hooks";
 import FooterLayout from "~/layouts/FooterLayout";
 import ModalLayout from "~/layouts/ModalLayout";
-import { isEmpty, numberFormater, selectFile } from "~/utils";
+import { media, users } from "~/services";
+import { getLocationFromHref, isEmpty, numberFormater, selectFile } from "~/utils";
 import ChangeAvatarModal from "./components/Modals/ChangeAvatarModal";
 import Tabs from "./components/Tabs";
 import { fetchUsername } from "./userPageSlice";
 
 function PageUser() {
+  useDocumentTitle("Reactgram Profile");
   const para = useParams();
   const { username } = para;
   const { currentUser } = useSelector((state) => state.user);
-  const { userPage, isLoadingUserPage, isMessageUserPage } = useSelector((state) => state.userPage);
+  const { userPage, isStatusUserPage, isLoadingUserPage, isMessageUserPage } =
+    useSelector((state) => state.userPage);
+
+  const [profilePic, setProfilePic] = useState("");
+  const {
+    state: isLoadingProfilePic,
+    setFalse: hiddenLoadingProfilePic,
+    setTrue: showLoadingProfilePic,
+  } = useBoolean();
 
   const dispatch = useDispatch();
 
-  useDocumentTitle("Reactgram photos");
 
   useEffect(() => {
-    try {
       dispatch(fetchUsername(username));
-    } catch (error) {
-      console.log(error)
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,14 +54,24 @@ function PageUser() {
 
   useDidMountEffect(() => {
     if (isEmpty(userPage)) {
-      navigate('/error')
+      navigate("/error");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPage, isMessageUserPage])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userPage, isMessageUserPage]);
 
   useDidMountEffect(() => {
     window.document.title = `${userPage.full_name} (@${userPage.username}) • Reactgram photos`;
   }, [userPage]);
+
+  useDidMountEffect(() => {
+    setProfilePic(userPage.profile_pic_url);
+  }, [userPage]);
+
+  useDidMountEffect(() => {
+    if (!isStatusUserPage && !isLoadingUserPage) {
+      navigate("/error");
+    }
+  }, [isStatusUserPage]);
 
   const {
     state: isShowAvatarModal,
@@ -69,21 +85,33 @@ function PageUser() {
     closeAvatarModal();
   });
 
-  const handleClickAvatar = async () => {
+  const handleUploadFile = async () => {
+    let files = await selectFile("image/*");
+    showLoadingProfilePic();
+    closeAvatarModal();
+    const imgSrc = URL.createObjectURL(files);
+    setProfilePic(imgSrc);
+    const idRamdom = v4();
+    const imageUrl = await media.uploadImage(files, idRamdom);
+    const image = { url: imageUrl };
+    await users.updateProfilePicUser(userPage.uid, image);
+    hiddenLoadingProfilePic();
+  };
+
+  const handleRemoveProfilePic = async () => {
+    showLoadingProfilePic();
+    closeAvatarModal();
+    await users.updateProfilePicUser(userPage.uid, {url: null});
+    hiddenLoadingProfilePic();
+  }
+
+  const handleClickAvatar = () => {
+    if (userPage.uid !== currentUser.uid) return;
     if (!!userPage.profile_pic_url) {
       openAvatarModal();
       return;
     }
-    let files = await selectFile("image/*");
-    console.log(files);
-    // contentElement.innerHTML = files
-    //   .map(
-    //     (file) =>
-    //       `<img src="${URL.createObjectURL(
-    //         file
-    //       )}" style="width: 100px; height: 100px;">`
-    //   )
-    //   .join("");
+    handleUploadFile();
   };
 
   const handleActiveTabs = (id) => {
@@ -151,15 +179,17 @@ function PageUser() {
         <div className="grid grid-cols-3 gap-[30px] pb-11 font-light">
           <div className="flex items-center justify-center">
             <button onClick={handleClickAvatar}>
-              <div className="rounded-full overflow-hidden w-16 h-16 md:w-40 md:h-40 flex-shrink-0">
-                {!!userPage.profile_pic_url && (
-                  <img
-                    src={userPage.profile_pic_url}
-                    alt={userPage.user.username}
-                  />
+              <div className="rounded-full overflow-hidden w-16 h-16 md:w-40 md:h-40 flex-shrink-0 relative">
+                {!!profilePic && (
+                  <img src={profilePic} alt={userPage.username} />
                 )}
-                {!userPage.profile_pic_url && (
+                {!userPage.profile_pic_url && !profilePic && (
                   <IconProfileFill className="text-[#dbdbdb]" />
+                )}
+                {isLoadingProfilePic && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <IconSpinner12Spins className="w-5 h-5 animate-spinner12Spins" />
+                  </div>
                 )}
               </div>
             </button>
@@ -220,29 +250,29 @@ function PageUser() {
             <div className="flex items-center gap-9">
               <p className="">
                 <span className="font-semibold">
-                  {numberFormater(currentUser.posts.count, 1)}
+                  {numberFormater(userPage.posts.count, 1)}
                 </span>{" "}
                 <span>bài viết</span>
               </p>
               <p className="">
                 <span className="font-semibold">
-                  {numberFormater(currentUser.followed_by.count, 1)}
+                  {numberFormater(userPage.followed_by.count, 1)}
                 </span>{" "}
                 <span>người theo dõi</span>
               </p>
               <p className="">
                 <span>Đang theo dõi</span>{" "}
                 <span className="font-semibold">
-                  {numberFormater(currentUser.follow.count, 1)}
+                  {numberFormater(userPage.follow.count, 1)}
                 </span>{" "}
                 <span>người</span>
               </p>
             </div>
 
             <div className="">
-              <h5 className="font-semibold">{currentUser.full_name}</h5>
-              <p>{currentUser.bio}</p>
-              <p>{currentUser.bio_url}</p>
+              <h5 className="font-semibold">{userPage.full_name}</h5>
+              <p>{userPage.bio}</p>
+              <a href={userPage.bio_url} target="blank" className="text-[#007AFF] font-semibold">{getLocationFromHref(userPage.bio_url)}</a>
             </div>
           </div>
         </div>
@@ -260,7 +290,13 @@ function PageUser() {
         </div>
       </div>
       <ModalLayout ref={modalRef} isShow={isShowModal}>
-        {isShowAvatarModal && <ChangeAvatarModal setFalse={closeAvatarModal} />}
+        {isShowAvatarModal && (
+          <ChangeAvatarModal
+            setFalse={closeAvatarModal}
+            handleUpload={handleUploadFile}
+            handleRemove={handleRemoveProfilePic}
+          />
+        )}
       </ModalLayout>
     </FooterLayout>
   );

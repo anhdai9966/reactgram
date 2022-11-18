@@ -6,23 +6,11 @@ import {
   IconXmarkCircleFill,
 } from "~/components/UI/Icons";
 import useDebounce from "~/hooks/useDebounce";
-import {
-  setHiddenAllDropdownHeader,
-  setIsLoading,
-  setShownDropdownListSearch,
-} from "~/components/Header/HeaderSlice";
-
-/**
- * reducer
- * 1. initial
- * 2. action
- * 3. reducer
- */
+import { setIsLoading } from "~/components/Header/HeaderSlice";
+import { toSlug } from "~/utils";
 
 function SearchField() {
-  const { isToggleDropdownListSearch, isLoadingSearch } = useSelector(
-    (state) => state.header
-  );
+  const { isLoadingSearch } = useSelector((state) => state.header);
   const dispatch = useDispatch();
 
   const [enteredSearch, setEnteredSearch] = useState("");
@@ -30,19 +18,20 @@ function SearchField() {
 
   const inputSearchRef = useRef();
 
-  const deBounce = useDebounce(enteredSearch, 800);
+  const deBounce = useDebounce(enteredSearch, 600);
 
   // có focus hoặc có giá trị search và phải có dropdown list search
-  // const hasBtnClear = isTouched || isToggleDropdownListSearch && !!enteredSearch
 
   useEffect(() => {
     if (!deBounce.trim()) return;
+    const toCode = toSlug(deBounce);
+    console.log(toCode)
     // handler search text
-    setTimeout(() => {
-      dispatch(setIsLoading(false));
-    }, 1000);
-  }, [deBounce]);
 
+    dispatch(setIsLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deBounce]);
+  
   const handleChangeInputSearch = (e) => {
     setEnteredSearch(e.target.value);
     dispatch(setIsLoading(true));
@@ -50,8 +39,6 @@ function SearchField() {
 
   const handleFocusInputSearch = () => {
     setIsTouched(true);
-    dispatch(setHiddenAllDropdownHeader());
-    dispatch(setShownDropdownListSearch());
 
     inputSearchRef.current.select();
     inputSearchRef.current.setSelectionRange(0, 99999); // For mobile devices
@@ -62,7 +49,6 @@ function SearchField() {
   };
 
   const handleClickClearValueSearch = () => {
-    dispatch(setHiddenAllDropdownHeader());
     setEnteredSearch("");
   };
 
@@ -88,7 +74,7 @@ function SearchField() {
             type="text"
             name="search"
             className={`h-10 w-full px-10 py-1 outline-none bg-transparent ${
-              !isTouched && !isToggleDropdownListSearch && "text-[#767680]/60"
+              !isTouched && "text-[#767680]/60"
             }`}
             value={enteredSearch}
             onChange={handleChangeInputSearch}
@@ -102,22 +88,18 @@ function SearchField() {
         <IconSearch className=" w-4 h-4" />
       </div>
 
-      {isToggleDropdownListSearch && (
-        <>
-          {(!isLoadingSearch || !enteredSearch) && (
-            <button
-              className="absolute right-4 top-1/2 -translate-y-1/2"
-              onClick={handleClickClearValueSearch}
-            >
-              <IconXmarkCircleFill className="w-4 h-4 text-[#3c3c43]/30" />
-            </button>
-          )}
-          {isLoadingSearch && !!enteredSearch && (
-            <div className="absolute right-4 top-1/2 -translate-y-1/2">
-              <IconSpinner8Spins className="w-4 h-4 animate-spinner8Spins" />
-            </div>
-          )}
-        </>
+      {!isLoadingSearch && enteredSearch && (
+        <button
+          className="absolute right-4 top-1/2 -translate-y-1/2"
+          onClick={handleClickClearValueSearch}
+        >
+          <IconXmarkCircleFill className="w-4 h-4 text-[#3c3c43]/30" />
+        </button>
+      )}
+      {isLoadingSearch && (
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <IconSpinner8Spins className="w-4 h-4 animate-spinner8Spins" />
+        </div>
       )}
     </div>
   );

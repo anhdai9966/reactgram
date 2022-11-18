@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostsByUserId } from "~/app/postSlice";
+import { fetchPostById, fetchPostsByUserId, setIsShowPostsModal } from "~/app/postSlice";
 import { IconCommentFill, IconHeartFill, IconSpinner12Spins } from "~/components/UI/Icons";
 import { numberFormater } from "~/utils";
 
@@ -16,7 +16,9 @@ function Grid() {
   }, []);
 
   const handleClickPostDetail = (postId) => {
-    console.log(postId);
+    dispatch(setIsShowPostsModal(true))
+    window.history.replaceState(null, "test", `/post/${postId}`);
+    dispatch(fetchPostById(postId))
   };
 
   if (isLoadingPost) {

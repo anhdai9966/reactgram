@@ -33,7 +33,7 @@ const accountSlice = createSlice({
       state.isLoadingAccount = action.payload;
     },
     setCurrentUser(state, action) {
-      state.currentUser = action.payload;
+      state.currentUser = { ...state.currentUser, ...action.payload };
     },
     setLogOut(state) {
       state.isLoggedIn = false;

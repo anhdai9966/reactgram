@@ -6,6 +6,7 @@ function TextareaItem({
   disabled = false,
   text = "",
   rows = 1,
+  maxLength = 100,
 }) {
   const { onChange, onBlur, name, ref } = register;
 
@@ -24,6 +25,7 @@ function TextareaItem({
           ref={ref}
           disabled={disabled}
           rows={rows}
+          maxLength={maxLength}
           className="block border rounded w-full p-2 outline-none bg-[#fafafa]"
         ></textarea>
         {text}

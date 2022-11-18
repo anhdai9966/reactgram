@@ -16,30 +16,37 @@ export const fetchAllPosts = createAsyncThunk(
   }
 );
 
-export const fetchPost = createAsyncThunk("post/fetchPost", async (postId) => {
-  try {
-    const resPost = await posts.getPostById(postId);
+export const fetchPostById = createAsyncThunk(
+  "post/fetchPostById",
+  async (postId) => {
+    try {
+      const resPost = await posts.getPostById(postId);
 
-    return Object.assign({ inputComment: "" }, resPost.data.data.post);
-  } catch (error) {
-    console.log(error);
+      return resPost.data.data.post;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
-export const fetchPostsByUserId = createAsyncThunk("post/fetchPostsByUserId", async (userId) => {
-  try {
-    const resPosts = await posts.getPostsByUserId(userId);
+export const fetchPostsByUserId = createAsyncThunk(
+  "post/fetchPostsByUserId",
+  async (userId) => {
+    try {
+      const resPosts = await posts.getPostsByUserId(userId);
 
-    return resPosts.data.data.posts
-  } catch (error) {
-    console.log(error);
+      return resPosts.data.data.posts;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const initialState = {
   posts: [],
   isLoadingPosts: false,
   post: {},
+  isShowPostModal: false,
   isLoadingPost: false,
   postsUser: [],
 };
@@ -50,6 +57,9 @@ const postSlice = createSlice({
   reducers: {
     setPosts(state, action) {
       state.posts = action.payload;
+    },
+    setIsShowPostsModal(state, action) {
+      state.isShowPostModal = action.payload;
     },
     setChangeCommentPost(state, action) {
       const { id, value } = action.payload;
@@ -93,14 +103,14 @@ const postSlice = createSlice({
     builder.addCase(fetchAllPosts.rejected, (state, action) => {
       state.isLoadingPosts = false;
     });
-    builder.addCase(fetchPost.pending, (state, action) => {
+    builder.addCase(fetchPostById.pending, (state, action) => {
       state.isLoadingPost = true;
     });
-    builder.addCase(fetchPost.fulfilled, (state, action) => {
-      state.posts = action.payload;
+    builder.addCase(fetchPostById.fulfilled, (state, action) => {
+      state.post = action.payload;
       state.isLoadingPost = false;
     });
-    builder.addCase(fetchPost.rejected, (state, action) => {
+    builder.addCase(fetchPostById.rejected, (state, action) => {
       state.isLoadingPost = false;
     });
     builder.addCase(fetchPostsByUserId.pending, (state, action) => {
@@ -122,6 +132,7 @@ export const {
   addEmojiCommentPost,
   setPost,
   addCommentItem,
+  setIsShowPostsModal,
 } = postSlice.actions;
 
 export default postSlice.reducer;

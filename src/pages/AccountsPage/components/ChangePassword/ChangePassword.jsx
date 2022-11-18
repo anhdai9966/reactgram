@@ -1,26 +1,61 @@
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { showToast } from "~/app/appSlice";
 import { IconProfile } from "~/components/UI/Icons";
+import { auth } from "~/configs";
+import { useDocumentTitle } from "~/hooks";
+import { authentication, users } from "~/services";
 import InputItem from "../InputItem";
 
 function ChangePassword() {
-  const { register, handleSubmit, watch } = useForm({
-    defaultValues: {
-      email: "dailai3110@gmail.com",
-    },
-  });
+  useDocumentTitle("Thay đổi mật khẩu • Reactgram photos");
+  const { currentUser } = useSelector((state) => state.user);
+  const { register, handleSubmit, watch } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    if (!data.confirm_new_password || !data.new_password || !data.old_password) {
+      dispatch(showToast("Bạn phải nhập đủ thông tin"));
+      return 
+    }
+    if (data.confirm_new_password !== data.new_password) {
+      dispatch(showToast("Oops! Nhập lại mật khẩu không trùng nhau."));
+      return;
+    }
+    await authentication
+      .updatePasswordByUser(data.confirm_new_password)
+      .then(() => {
+        dispatch(showToast("Thay đổi mật khẩu thành công."));
+        authentication.logout()
+      })
+      .catch((error) => {
+        dispatch(showToast(error.code));
+      });
+    setTimeout(() => {
+      navigate('/accounts/login')
+    }, 1000);
+  };
 
   return (
     <article className="py-8 space-y-6">
       <div className="flex gap-4 lg:gap-6 px-2 items-center">
         <div className="px-2 h-8 flex items-center lg:justify-end lg:w-36 shrink-0">
           <div className="w-9 h-9 border rounded-full overflow-hidden">
-            <IconProfile className="text-[#8c8c8c]/60" />
+            {!!currentUser.profile_pic_url && (
+              <img
+                src={currentUser.profile_pic_url}
+                alt={currentUser.username}
+              />
+            )}
+            {!currentUser.profile_pic_url && (
+              <IconProfile className="text-[#8c8c8c]/60" />
+            )}
           </div>
         </div>
         <div className="w-full max-w-sm space-y-2">
-          <h2 className="text-lg">laidai9966</h2>
+          <h2 className="text-lg">{currentUser.username}</h2>
         </div>
       </div>
 

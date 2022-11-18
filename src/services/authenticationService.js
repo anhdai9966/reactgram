@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updatePassword,
 } from "firebase/auth";
 import { auth, provider } from "~/configs";
 
@@ -53,18 +54,18 @@ export function checkLogin(handle) {
   });
 }
 
-export async function logout() {
-  return await signOut(auth);
+export function logout() {
+  return signOut(auth);
 }
 
 export async function resetPassword(email) {
   return await sendPasswordResetEmail(auth, email);
 }
 
+export function updatePasswordByUser(password) {
+  return updatePassword(auth.currentUser, password);
+}
+
 // export function updateEmail(email) {
 //   return currentUser.updateEmail(email);
-// }
-
-// export function updatePassword(password) {
-//   return currentUser.updatePassword(password);
 // }

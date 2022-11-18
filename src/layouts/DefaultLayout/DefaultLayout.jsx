@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useOnClickOutside } from "~/hooks";
 import Header from "~/components/Header";
 import { setShowLoginModal } from "~/app/appSlice";
@@ -8,24 +8,35 @@ import ModalLayout from "~/layouts/ModalLayout";
 import OverlayCloseScreen from "~/components/OverlayCloseScreen";
 import Toast from "~/components/Toast";
 import ToastLayout from "../Animate/ToastLayout";
+import PostModal from "~/components/Modals/PostModal";
+import { setIsShowPostsModal } from "~/app/postSlice";
 
 function DefaultLayout() {
   const { isShowLoginModal, isShowToast } = useSelector((state) => state.app);
   const { isLoadingAccount } = useSelector((state) => state.user);
+  const { isShowPostModal } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const isShownNotificationModal = false;
 
-  const isShowModal = isShowLoginModal || isShownNotificationModal;
-  const isShowBtnCloseModal = false;
+  const isShowModal =
+    isShowLoginModal || isShownNotificationModal || isShowPostModal;
+  const isShowBtnCloseModal = isShowPostModal;
 
-  const modalRef = useOnClickOutside(() => {
-    closeLoginModal();
-  });
+  const closePostModal = () => {
+    dispatch(setIsShowPostsModal(false));
+  };
 
   const closeLoginModal = () => {
     dispatch(setShowLoginModal(false));
   };
+
+  const modalRef = useOnClickOutside(() => {
+    window.history.replaceState(null, "back", location.pathname);
+    closeLoginModal();
+    closePostModal();
+  });
 
   return (
     <div className="bg-[#fafafa] relative">
@@ -39,10 +50,11 @@ function DefaultLayout() {
       <ModalLayout
         ref={modalRef}
         isShow={isShowModal}
-        isShownBtn={isShowBtnCloseModal}
+        isShowBtn={isShowBtnCloseModal}
       >
         {isShowLoginModal && <LoginModal setFalse={closeLoginModal} />}
         {isShownNotificationModal && <NotificationModal />}
+        {isShowPostModal && <PostModal />}
       </ModalLayout>
 
       {isLoadingAccount && <OverlayCloseScreen />}

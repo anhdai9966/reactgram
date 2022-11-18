@@ -17,10 +17,10 @@ import {
 import DropLayout from "~/layouts/DropLayout";
 import Emoji from "~/components/Emoji";
 import { addEmojiCommentPost, setChangeCommentPost } from "~/app/postSlice";
+import CommentItem from "../CommentItem";
 
 import moment from "moment";
 import "moment/locale/vi";
-import CommentItem from "../CommentItem";
 moment.locale("vi");
 
 function Thread({ item }) {
