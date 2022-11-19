@@ -9,12 +9,12 @@ import LoginPage from "~/pages/LoginPage";
 import ExplorePage from "~/pages/ExplorePage";
 import InboxPage from "~/pages/InboxPage";
 import SuggestionsForYou from "~/pages/SuggestionsForYou";
-import { ModalCommentThread } from "~/pages/HomePage/components/Modals";
 import AccountsPage from "~/pages/AccountsPage";
 import EditAccount from "~/pages/AccountsPage/components/EditAccount";
 import ChangePassword from "~/pages/AccountsPage/components/ChangePassword";
 import SignupPage from "~/pages/SignupPage";
 import ErrorPage from "~/pages/ErrorPage";
+import PostPage from "~/pages/PostPage";
 
 const routes = (isLoggedIn) => [
   {
@@ -28,7 +28,7 @@ const routes = (isLoggedIn) => [
       {
         path: "/post",
         element: <Outlet />,
-        children: [{ path: ":postId", element: <ModalCommentThread /> }],
+        children: [{ path: ":postId", element: <PostPage /> }],
       },
       {
         path: "/explore",

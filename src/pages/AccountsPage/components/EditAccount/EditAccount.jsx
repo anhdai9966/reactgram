@@ -12,7 +12,7 @@ import {
 import { useBoolean, useDidMountEffect, useDocumentTitle, useOnClickOutside } from "~/hooks";
 import ModalLayout from "~/layouts/ModalLayout";
 import { users } from "~/services";
-import { isEmpty } from "~/utils";
+import { isEmpty, toSlug } from "~/utils";
 import InputItem from "../InputItem";
 import GenderModal from "./components/GenderModal";
 import TextareaItem from "./components/TextareaItem";
@@ -50,8 +50,9 @@ function EditAccount() {
   const dispatch = useDispatch()
 
   const onSubmit = async (data) => {
+    const combineData = {data, full_name_code: toSlug(data.full_name)}
     setIsLoadingEditUser(true);
-    await users.updateProfile(currentUser.uid, data);
+    await users.updateProfile(currentUser.uid, combineData);
     dispatch(setCurrentUser(data))
     dispatch(showToast('Cập nhật thành công 👏👏👏!'))
     setIsLoadingEditUser(false);

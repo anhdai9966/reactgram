@@ -1,4 +1,5 @@
 import { axiosFirebaseConfig, ROLE } from "~/configs";
+import { toSlug } from "~/utils";
 
 const users = {
   getUserById(userId) {
@@ -20,14 +21,6 @@ const users = {
   getUsersByKeyword(keyword) {
     try {
       const url = `/users/search/${keyword}`;
-      return axiosFirebaseConfig.get(url);
-    } catch (error) {
-      throw error;
-    }
-  },
-  getUsersResent(uid) {
-    try {
-      const url = `/users/resent/${uid}`;
       return axiosFirebaseConfig.get(url);
     } catch (error) {
       throw error;
@@ -66,7 +59,7 @@ const users = {
         email: data.email,
         emailVerified: data.emailVerified,
         full_name: data.displayName,
-        full_name_code: data.displayName.toLowerCase(),
+        full_name_code: toSlug(data.displayName),
         username: data.username.toLowerCase(),
         profile_pic_url: null,
         biography: null,

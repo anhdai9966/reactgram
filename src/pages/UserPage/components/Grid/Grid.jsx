@@ -1,24 +1,35 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostById, fetchPostsByUserId, setIsShowPostsModal } from "~/app/postSlice";
-import { IconCommentFill, IconHeartFill, IconSpinner12Spins } from "~/components/UI/Icons";
+import { useParams } from "react-router-dom";
+import {
+  fetchPostById,
+  fetchPostsByUsername,
+  setIsShowPostsModal,
+} from "~/app/postSlice";
+import {
+  IconCommentFill,
+  IconHeartFill,
+  IconSpinner12Spins,
+} from "~/components/UI/Icons";
 import { numberFormater } from "~/utils";
 
 function Grid() {
-  const { userPage } = useSelector((state) => state.userPage);
+  const params = useParams();
+  const { username } = params;
+
   const { postsUser, isLoadingPost } = useSelector((state) => state.posts);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPostsByUserId(userPage.uid));
+    dispatch(fetchPostsByUsername(username));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [username]);
 
   const handleClickPostDetail = (postId) => {
-    dispatch(setIsShowPostsModal(true))
+    dispatch(setIsShowPostsModal(true));
     window.history.replaceState(null, "test", `/post/${postId}`);
-    dispatch(fetchPostById(postId))
+    dispatch(fetchPostById(postId));
   };
 
   if (isLoadingPost) {

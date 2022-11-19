@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, Outlet, useNavigate } from "react-router-dom";
+import {
+  useParams,
+  Outlet,
+  useNavigate,
+  useLoaderData,
+  useLocation,
+} from "react-router-dom";
 import { v4 } from "uuid";
+import { setCurrentUser, updateProfilePicCurrentUser } from "~/app/userSlice";
 import {
   IconGrid,
   IconGear,
@@ -22,7 +29,12 @@ import {
 import FooterLayout from "~/layouts/FooterLayout";
 import ModalLayout from "~/layouts/ModalLayout";
 import { media, users } from "~/services";
-import { getLocationFromHref, isEmpty, numberFormater, selectFile } from "~/utils";
+import {
+  getLocationFromHref,
+  isEmpty,
+  numberFormater,
+  selectFile,
+} from "~/utils";
 import ChangeAvatarModal from "./components/Modals/ChangeAvatarModal";
 import Tabs from "./components/Tabs";
 import { fetchUsername } from "./userPageSlice";
@@ -30,6 +42,7 @@ import { fetchUsername } from "./userPageSlice";
 function PageUser() {
   useDocumentTitle("Reactgram Profile");
   const para = useParams();
+  const loc = useLocation();
   const { username } = para;
   const { currentUser } = useSelector((state) => state.user);
   const { userPage, isStatusUserPage, isLoadingUserPage, isMessageUserPage } =
@@ -44,11 +57,10 @@ function PageUser() {
 
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-      dispatch(fetchUsername(username));
+    dispatch(fetchUsername(username));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [username]);
 
   const navigate = useNavigate();
 
@@ -94,6 +106,7 @@ function PageUser() {
     const idRamdom = v4();
     const imageUrl = await media.uploadImage(files, idRamdom);
     const image = { url: imageUrl };
+    dispatch(updateProfilePicCurrentUser(imageUrl));
     await users.updateProfilePicUser(userPage.uid, image);
     hiddenLoadingProfilePic();
   };
@@ -101,9 +114,9 @@ function PageUser() {
   const handleRemoveProfilePic = async () => {
     showLoadingProfilePic();
     closeAvatarModal();
-    await users.updateProfilePicUser(userPage.uid, {url: null});
+    await users.updateProfilePicUser(userPage.uid, { url: null });
     hiddenLoadingProfilePic();
-  }
+  };
 
   const handleClickAvatar = () => {
     if (userPage.uid !== currentUser.uid) return;
@@ -130,7 +143,7 @@ function PageUser() {
       id: 1,
       title: "Bài viết",
       Icon: <IconGrid />,
-      isActive: true,
+      isActive: !loc.pathname.includes("saved"),
       to: "",
       onClick: (id, to) => {
         navigate(to);
@@ -141,7 +154,8 @@ function PageUser() {
       id: 2,
       title: "Đã lưu",
       Icon: <IconBookmark />,
-      isActive: false,
+      isActive: loc.pathname.includes("saved"),
+      hidden: false,
       to: "saved",
       onClick: (id, to) => {
         navigate(to);
@@ -161,11 +175,26 @@ function PageUser() {
     },
   ]);
 
+  useEffect(() => {
+    if (isEmpty(currentUser) || isEmpty(userPage)) return;
+
+    setTabs((state) =>
+      state.map((tab) => {
+        if (tab.id === 2) {
+          if (currentUser.uid !== userPage.uid) {
+            tab.hidden = true;
+          }
+        }
+        return tab;
+      })
+    );
+  }, [currentUser, userPage, username]);
+
   const handleClickEditProfile = () => {
     navigate("/accounts/edit");
   };
 
-  if (isEmpty(userPage)) {
+  if (isEmpty(userPage) || isLoadingUserPage) {
     return (
       <div className="w-full h-[var(--window-height)] flex justify-center items-center">
         <IconSpinner12Spins className="w-6 h-6 animate-spinner12Spins" />
@@ -228,7 +257,7 @@ function PageUser() {
                 {userPage.uid !== currentUser.uid && (
                   <>
                     <button className="min-w-24 h-8 flex items-center justify-center border rounded">
-                      <span className="text-sm font-semibold">Nhắn tin</span>
+                      <span className="text-sm font-semibold px-2">Nhắn tin</span>
                     </button>
                     {false && (
                       <button className="w-24 h-8 flex items-center justify-center border rounded">
@@ -250,13 +279,13 @@ function PageUser() {
             <div className="flex items-center gap-9">
               <p className="">
                 <span className="font-semibold">
-                  {numberFormater(userPage.posts.count, 1)}
+                  {numberFormater(userPage.posts?.count, 1)}
                 </span>{" "}
                 <span>bài viết</span>
               </p>
               <p className="">
                 <span className="font-semibold">
-                  {numberFormater(userPage.followed_by.count, 1)}
+                  {numberFormater(userPage.followed_by?.count, 1)}
                 </span>{" "}
                 <span>người theo dõi</span>
               </p>
@@ -272,7 +301,15 @@ function PageUser() {
             <div className="">
               <h5 className="font-semibold">{userPage.full_name}</h5>
               <p>{userPage.bio}</p>
-              <a href={userPage.bio_url} target="blank" className="text-[#007AFF] font-semibold">{getLocationFromHref(userPage.bio_url)}</a>
+              {!!userPage.bio_url && (
+                <a
+                  href={userPage.bio_url}
+                  target="blank"
+                  className="text-[#385898] font-semibold text-sm text-truncate"
+                >
+                  {getLocationFromHref(userPage.bio_url)}
+                </a>
+              )}
             </div>
           </div>
         </div>

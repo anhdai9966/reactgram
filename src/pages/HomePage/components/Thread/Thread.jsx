@@ -32,7 +32,7 @@ function Thread({ item }) {
 
   const handleClickIconComment = () => {
     // navigate('/post/123')
-    window.history.replaceState(null, "test", "/post/123");
+    window.history.replaceState(null, "test", `/post/${item.id}`);
     // window.history.back()
     dispatch(setShownModalDetailThead());
   };
@@ -74,7 +74,7 @@ function Thread({ item }) {
     <article className="w-full bg-white rounded-lg overflow-hidden pb-1 border text-sm font-light">
       <div className="w-full flex items-center px-3 h-14">
         <div className="w-full flex items-center gap-3">
-          <Link to={`/${item.user.username}`}>
+          <Link to={`/@${item.user.username}`}>
             <div className="w-8 h-8 rounded-full overflow-hidden">
               {!!item.user.profile_pic_url && (
                 <img src={item.user.profile_pic_url} alt="avatar" />
@@ -85,7 +85,7 @@ function Thread({ item }) {
             </div>
           </Link>
 
-          <Link to={`/${item.user.username}`} className="font-semibold">
+          <Link to={`/@${item.user.username}`} className="font-semibold">
             {item.user.username}
           </Link>
         </div>
@@ -137,10 +137,10 @@ function Thread({ item }) {
 
       <div className="flex flex-col gap-2 px-3">
         <div className="">
-          <Link to="@ui_gradient" className="font-semibold mr-2">
+          <Link to={`/@${item.user.username}`} className="font-semibold mr-2">
             {item.user.username}
           </Link>
-          <span>{item.caption}</span>
+          <span className="text-truncate-5">{item.caption}</span>
           <div className="flex gap-2">
             ... <button className="text-[#939393]">Xem thêm</button>
           </div>
@@ -157,7 +157,7 @@ function Thread({ item }) {
       </div>
 
       <div className="">
-        {item.comments.map((comm) => (
+        {item?.comments.map((comm) => (
           <CommentItem item={comm} />
         ))}
       </div>

@@ -1,10 +1,11 @@
+import PostModal from "~/components/Modals/PostModal";
+
 function PostPage() {
-  
   return (
-    <>
-      <h1>PostPage</h1>
-    </>
-  )
+    <div className="py-5">
+      <PostModal />
+    </div>
+  );
 }
 
-export default PostPage
+export default PostPage;

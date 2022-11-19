@@ -11,6 +11,8 @@ import { isEmpty } from "~/utils";
 import { logout, signup } from "~/services/authenticationService";
 import users from "~/services/usersService";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { showToast } from "~/app/appSlice";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -22,6 +24,8 @@ function SignupPage() {
     watch,
     formState: { errors },
   } = useForm();
+
+  const dispatch = useDispatch()
 
   const onSubmit = async (data) => {
     try {
@@ -39,7 +43,7 @@ function SignupPage() {
       navigate("/accounts/login");
     } catch (error) {
       // auth/email-already-in-use
-      console.log(error.code);
+      dispatch(showToast(`Email đã được sử dụng!! ${error.code}`))
     }
     setIsLoadingCreateUser(false);
   };

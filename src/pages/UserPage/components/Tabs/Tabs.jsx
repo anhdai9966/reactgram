@@ -1,5 +1,7 @@
 function Tabs({ item }) {
-  const { id, Icon, title, isActive, to, onClick } = item;
+  const { id, Icon, title, isActive, to, onClick, hidden = false } = item;
+
+  if (hidden) return ''
 
   return (
     <li

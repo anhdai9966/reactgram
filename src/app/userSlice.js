@@ -35,6 +35,9 @@ const accountSlice = createSlice({
     setCurrentUser(state, action) {
       state.currentUser = { ...state.currentUser, ...action.payload };
     },
+    updateProfilePicCurrentUser(state, action) {
+      state.currentUser = { ...state.currentUser, profile_pic_url: action.payload };
+    },
     setLogOut(state) {
       state.isLoggedIn = false;
       state.isLoadingAccount = false;
@@ -63,5 +66,6 @@ export const {
   setCurrentUser,
   setLogOut,
   setIsLoadingScreen,
+  updateProfilePicCurrentUser,
 } = accountSlice.actions;
 export default accountSlice.reducer;

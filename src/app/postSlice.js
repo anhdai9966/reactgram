@@ -18,13 +18,13 @@ export const fetchAllPosts = createAsyncThunk(
 
 export const fetchPostById = createAsyncThunk(
   "post/fetchPostById",
-  async (postId) => {
+  async (postId, thunkApi) => {
     try {
       const resPost = await posts.getPostById(postId);
-
-      return resPost.data.data.post;
+      const post = resPost.data.data.post;
+      return { ...post, inputComment: "", comments: [] };
     } catch (error) {
-      console.log(error);
+      return thunkApi.rejectWithValue(true);
     }
   }
 );
@@ -42,13 +42,28 @@ export const fetchPostsByUserId = createAsyncThunk(
   }
 );
 
+export const fetchPostsByUsername = createAsyncThunk(
+  "post/fetchPostsByUsername",
+  async (username) => {
+    try {
+      const resPosts = await posts.getPostsByUsername(username);
+
+      return resPosts.data.data.posts;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   posts: [],
   isLoadingPosts: false,
   post: {},
-  isShowPostModal: false,
+  postError: false,
   isLoadingPost: false,
+  isShowPostModal: false,
   postsUser: [],
+  feeds: [],
 };
 
 const postSlice = createSlice({
@@ -57,6 +72,17 @@ const postSlice = createSlice({
   reducers: {
     setPosts(state, action) {
       state.posts = action.payload;
+    },
+    addNewPost(state, action) {
+      state.posts = [
+        { ...action.payload, inputComment: "", comments: [] },
+        ...state.posts,
+      ];
+      state.postsUser = [action.payload, ...state.postsUser];
+      state.feeds = [
+        { ...action.payload, inputComment: "", comments: [] },
+        ...state.feeds,
+      ];
     },
     setIsShowPostsModal(state, action) {
       state.isShowPostModal = action.payload;
@@ -112,6 +138,7 @@ const postSlice = createSlice({
     });
     builder.addCase(fetchPostById.rejected, (state, action) => {
       state.isLoadingPost = false;
+      state.postError = action.payload;
     });
     builder.addCase(fetchPostsByUserId.pending, (state, action) => {
       state.isLoadingPost = true;
@@ -121,6 +148,16 @@ const postSlice = createSlice({
       state.isLoadingPost = false;
     });
     builder.addCase(fetchPostsByUserId.rejected, (state, action) => {
+      state.isLoadingPost = false;
+    });
+    builder.addCase(fetchPostsByUsername.pending, (state, action) => {
+      state.isLoadingPost = true;
+    });
+    builder.addCase(fetchPostsByUsername.fulfilled, (state, action) => {
+      state.postsUser = action.payload;
+      state.isLoadingPost = false;
+    });
+    builder.addCase(fetchPostsByUsername.rejected, (state, action) => {
       state.isLoadingPost = false;
     });
   },
@@ -133,6 +170,8 @@ export const {
   setPost,
   addCommentItem,
   setIsShowPostsModal,
+  addNewPost,
+  addNewFeed,
 } = postSlice.actions;
 
 export default postSlice.reducer;

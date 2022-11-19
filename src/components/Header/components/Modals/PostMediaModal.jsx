@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
+import { addNewPost } from "~/app/postSlice";
 import images from "~/assets/images";
 import {
   IconArrowLeft,
@@ -28,6 +30,8 @@ function PostMediaModal({ setFalse }) {
   const [step, setStep] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
 
+  const navigate = useNavigate();
+
   const provinceRef = useRef(); // tinh
   const captionRef = useRef(); // chu thich
 
@@ -41,7 +45,9 @@ function PostMediaModal({ setFalse }) {
 
   const { currentUser } = useSelector((state) => state.user);
 
-  const [newPost, setNewPost] = useState({})
+  const [newPost, setNewPost] = useState({});
+
+  const dispatch = useDispatch();
 
   useDidMountEffect(() => {
     (async () => {
@@ -61,7 +67,9 @@ function PostMediaModal({ setFalse }) {
           comment_threading_disabled: isBlockComment,
         });
 
-        setNewPost(resPost.data.data);
+        dispatch(addNewPost(resPost.data.data.post));
+
+        setNewPost(resPost.data.data.post);
         setStep((step) => step + 1);
       } catch (error) {
         console.log(error);
@@ -69,7 +77,8 @@ function PostMediaModal({ setFalse }) {
     })();
   }, [isSubmit]);
 
-  const handleClickCloseMediaModal = () => {
+  const handleClickViewPosted = () => {
+    navigate(`/post/${newPost.id}`);
     setFalse();
   };
 
@@ -162,10 +171,10 @@ function PostMediaModal({ setFalse }) {
                 Đã chia sẻ bài viết của bạn
               </p>
               <button
-                onClick={handleClickCloseMediaModal}
+                onClick={handleClickViewPosted}
                 className="px-4 py-1 rounded-md bg-[#007AFF] text-white"
               >
-                Đóng
+                Xem
               </button>
             </div>
           )}
@@ -174,9 +183,17 @@ function PostMediaModal({ setFalse }) {
           <div className="w-full h-[500px] overflow-x-hidden overflow-y-scroll scrollbar-gutter">
             <div className="px-4 py-4 flex gap-3 items-center">
               <div className="w-8 h-8 rounded-full overflow-hidden">
-                <IconProfile className="text-black/30" />
+                {!!currentUser.profile_pic_url && (
+                  <img
+                    src={currentUser.profile_pic_url}
+                    alt={currentUser.username}
+                  />
+                )}
+                {!currentUser.profile_pic_url && (
+                  <IconProfile className="text-black/30" />
+                )}
               </div>
-              <p className="font-semibold">laidai9966</p>
+              <p className="font-semibold">{currentUser.username}</p>
             </div>
             <div className="divide-y">
               <div className="px-4">

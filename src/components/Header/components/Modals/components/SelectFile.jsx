@@ -62,6 +62,7 @@ function SelectFile({ onReadFile }) {
 
   const handleClickSelectFile = async () => {
     const fileImage = await selectFile("image/*");
+    if (!fileImage) return;
     handleReadFile(fileImage);
   };
 

@@ -1,19 +1,25 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLockedBody } from "~/hooks";
-import { setIsShowClearAllRecentModal } from "~/components/Header/HeaderSlice";
+import {
+  deleteAllRecents,
+  setIsShowClearAllRecentModal,
+} from "~/components/Header/HeaderSlice";
+import { recents } from "~/services";
 
 function ClearAllRecent() {
   useLockedBody(true);
+  const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
   const handleClickCancel = () => {
-    dispatch(setIsShowClearAllRecentModal(false))
+    dispatch(setIsShowClearAllRecentModal(false));
   };
 
-  const handleDeleteAllRecent = () => {
-    console.log("delete all recent");
+  const handleDeleteAllRecent = async () => {
+    dispatch(deleteAllRecents());
     handleClickCancel();
+    await recents.deleteAllResentByUserId(currentUser.uid);
   };
 
   return (

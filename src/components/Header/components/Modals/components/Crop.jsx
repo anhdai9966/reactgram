@@ -153,7 +153,7 @@ function Crop({ sourceImage, isShowToolCroper = true, setCroppedImage }) {
         aspect={aspect}
         showGrid={isShowGrid}
         zoomWithScroll={false}
-        objectFit="horizontal-cover"
+        // objectFit="horizontal-cover"
         onCropChange={setCrop}
         onZoomChange={setZoom}
         onRotationChange={setRotation}
@@ -194,7 +194,7 @@ function Crop({ sourceImage, isShowToolCroper = true, setCroppedImage }) {
                     <input
                       id="small-range"
                       type="range"
-                      min={1}
+                      min={0}
                       max={3}
                       step={0.1}
                       value={zoom}

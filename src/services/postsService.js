@@ -18,6 +18,14 @@ const posts = {
       throw error;
     }
   },
+  getPostsByUsername(username) {
+    try {
+      const url = `/posts/username/${username}`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
   getPostsByExplore(uid) {
     try {
       const url = `/posts/explore/${uid}`;
@@ -41,6 +49,7 @@ const posts = {
       const post = {
         id: idv4,
         uid: data.uid,
+        username: data.username,
         image: data.image,
         caption: data.caption,
         comment_count: 0,

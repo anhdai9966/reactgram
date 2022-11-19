@@ -6,14 +6,20 @@ import {
   IconXmarkCircleFill,
 } from "~/components/UI/Icons";
 import useDebounce from "~/hooks/useDebounce";
-import { setIsLoading } from "~/components/Header/HeaderSlice";
+import {
+  fetchUsersByKeyWord,
+  setEnteredSearch,
+  setIsLoadingSearch,
+} from "~/components/Header/HeaderSlice";
 import { toSlug } from "~/utils";
+import { useDidMountEffect } from "~/hooks";
 
 function SearchField() {
-  const { isLoadingSearch } = useSelector((state) => state.header);
+  const { isLoadingSearch, enteredSearch } = useSelector(
+    (state) => state.header
+  );
   const dispatch = useDispatch();
 
-  const [enteredSearch, setEnteredSearch] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
   const inputSearchRef = useRef();
@@ -22,19 +28,21 @@ function SearchField() {
 
   // có focus hoặc có giá trị search và phải có dropdown list search
 
-  useEffect(() => {
-    if (!deBounce.trim()) return;
+  useDidMountEffect(() => {
+    if (!deBounce.trim()) {
+      dispatch(setIsLoadingSearch(false));
+      return;
+    }
     const toCode = toSlug(deBounce);
-    console.log(toCode)
-    // handler search text
+    // search api
 
-    dispatch(setIsLoading(false));
+    dispatch(fetchUsersByKeyWord(toCode))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deBounce]);
-  
+
   const handleChangeInputSearch = (e) => {
-    setEnteredSearch(e.target.value);
-    dispatch(setIsLoading(true));
+    dispatch(setEnteredSearch(e.target.value));
+    dispatch(setIsLoadingSearch(true));
   };
 
   const handleFocusInputSearch = () => {
@@ -49,7 +57,7 @@ function SearchField() {
   };
 
   const handleClickClearValueSearch = () => {
-    setEnteredSearch("");
+    dispatch(setEnteredSearch(""));
   };
 
   const handleSubmitFormSearch = (e) => {

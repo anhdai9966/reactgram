@@ -60,7 +60,7 @@ function PageSuggestionsForYou() {
                   <img src={images.avatarJunvu95} alt={user.username} />
                 </Link>
               </div>
-              <div class="flex flex-col text-sm">
+              <div className="flex flex-col text-sm">
                 <div className="flex items-center gap-1">
                   <Link to={`/@${user.username}`} className="font-semibold">
                     {user.username}

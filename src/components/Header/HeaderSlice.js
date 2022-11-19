@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { users } from "~/services";
+import { recents, users } from "~/services";
 
 export const fetchUsersByKeyWord = createAsyncThunk(
   "header/fetchUserByKeyWord",
@@ -10,18 +10,19 @@ export const fetchUsersByKeyWord = createAsyncThunk(
   }
 );
 
-export const fetchUsersResent = createAsyncThunk(
-  "header/fetchUserResent",
+export const fetchResentsByUserId = createAsyncThunk(
+  "header/fetchResentsByUserId",
   async (uid) => {
-    const res = await users.getUsersResent(uid);
+    const res = await recents.getResentByUserId(uid);
 
-    return res.data.data.users;
+    return res.data.data.recents;
   }
 );
 
 const initialState = {
   searchs: [],
   recents: [],
+  enteredSearch: "",
   isLoadingSearch: false,
   isShowClearAllRecentModal: false,
 };
@@ -33,13 +34,27 @@ const headerSlice = createSlice({
     setIsShowClearAllRecentModal(state, action) {
       state.isShowClearAllRecentModal = action.payload;
     },
-    setIsLoading(state, action) {
+    setEnteredSearch(state, action) {
+      state.enteredSearch = action.payload;
+    },
+    setIsLoadingSearch(state, action) {
       state.isLoadingSearch = action.payload;
+    },
+    addRecents(state, action) {
+      state.recents = [action.payload, ...state.recents];
+    },
+    deleteRecents(state, action) {
+      const id = action.payload;
+      state.recents = state.recents.filter((recent) => recent.id !== id);
+    },
+    deleteAllRecents(state, action) {
+      state.recents = [];
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUsersByKeyWord.pending, (state, action) => {
       state.isLoadingSearch = true;
+      state.searchs = [];
     });
     builder.addCase(fetchUsersByKeyWord.fulfilled, (state, action) => {
       state.isLoadingSearch = false;
@@ -48,20 +63,26 @@ const headerSlice = createSlice({
     builder.addCase(fetchUsersByKeyWord.rejected, (state, action) => {
       state.isLoadingSearch = false;
     });
-    builder.addCase(fetchUsersResent.pending, (state, action) => {
+    builder.addCase(fetchResentsByUserId.pending, (state, action) => {
       state.isLoadingSearch = true;
     });
-    builder.addCase(fetchUsersResent.fulfilled, (state, action) => {
+    builder.addCase(fetchResentsByUserId.fulfilled, (state, action) => {
       state.isLoadingSearch = false;
       state.recents = action.payload;
     });
-    builder.addCase(fetchUsersResent.rejected, (state, action) => {
+    builder.addCase(fetchResentsByUserId.rejected, (state, action) => {
       state.isLoadingSearch = false;
     });
   },
 });
 
-export const { setIsShowClearAllRecentModal, setIsLoading } =
-  headerSlice.actions;
+export const {
+  setIsShowClearAllRecentModal,
+  setEnteredSearch,
+  setIsLoadingSearch,
+  addRecents,
+  deleteRecents,
+  deleteAllRecents,
+} = headerSlice.actions;
 
 export default headerSlice.reducer;

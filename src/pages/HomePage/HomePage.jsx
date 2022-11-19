@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import images from "~/assets/images";
-import { IconSpinner12Spins } from "~/components/UI/Icons";
+import { IconProfile, IconSpinner12Spins } from "~/components/UI/Icons";
 import { ModalCommentThread, ModalMenuThread } from "./components/Modals";
 import Thread from "./components/Thread";
 import { useDocumentTitle, useOnClickOutside } from "~/hooks";
@@ -12,6 +12,7 @@ import ModalLayout from "~/layouts/ModalLayout";
 import { setShowLoginModal } from "~/app/appSlice";
 import { useEffect } from "react";
 import { fetchAllPosts } from "~/app/postSlice";
+import { isEmpty } from "~/utils";
 
 // const posts = [
 //   {
@@ -102,6 +103,7 @@ function HomePage() {
   useDocumentTitle("Reactgram");
 
   const { posts, isLoadingPosts } = useSelector((state) => state.posts);
+  const { currentUser } = useSelector((state) => state.user);
 
   const { isToggleModalMenuThread, isToggleModalDetailThead } = useSelector(
     (state) => state.pageHome
@@ -115,8 +117,8 @@ function HomePage() {
 
   useEffect(() => {
     dispatch(fetchAllPosts())
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const modalRef = useOnClickOutside(() => {
     dispatch(setHiddenAllModalHome());
@@ -126,6 +128,14 @@ function HomePage() {
   const handleClickBtnSwitchAccount = () => {
     dispatch(setShowLoginModal(true));
   };
+
+  if (isEmpty(currentUser)) {
+    return (
+      <div className="w-full h-[var(--window-height)] flex justify-center items-center">
+        <IconSpinner12Spins className="w-6 h-6 animate-spinner12Spins" />
+      </div>
+    );
+  }
 
   return (
     <div className="">
@@ -194,13 +204,21 @@ function HomePage() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between py-4 pl-4">
               <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-full overflow-hidden">
-                  <Link to="/">
-                    <img src={images.avatar2} alt="avatar" />
-                  </Link>
-                </div>
-                <Link to="/" className="text-sm">
-                  dailai3110
+                <Link to={`/@${currentUser.username}`}>
+                  <div className="w-14 h-14 rounded-full overflow-hidden">
+                    {!!currentUser.profile_pic_url && (
+                      <img
+                        src={currentUser.profile_pic_url}
+                        alt={currentUser.username}
+                      />
+                    )}
+                    {!currentUser.profile_pic_url && (
+                      <IconProfile className="text-[#8c8c8c]" />
+                    )}
+                  </div>
+                </Link>
+                <Link to={`/@${currentUser.username}`} className="text-sm font-semibold">
+                  {currentUser.username}
                 </Link>
               </div>
               <button
