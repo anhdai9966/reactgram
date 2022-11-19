@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ import {
   IconVerified,
   IconBookmark,
   IconSpinner12Spins,
+  IconSpinner8SpinsWhite,
 } from "~/components/UI/Icons";
 import {
   useBoolean,
@@ -29,6 +31,7 @@ import {
 import FooterLayout from "~/layouts/FooterLayout";
 import ModalLayout from "~/layouts/ModalLayout";
 import { media, users } from "~/services";
+import follows from "~/services/followsService";
 import {
   getLocationFromHref,
   isEmpty,
@@ -176,7 +179,7 @@ function PageUser() {
   ]);
 
   useEffect(() => {
-    if (isEmpty(currentUser) || isEmpty(userPage)) return;
+    // if (isEmpty(currentUser) || isEmpty(userPage)) return;
 
     setTabs((state) =>
       state.map((tab) => {
@@ -192,6 +195,33 @@ function PageUser() {
 
   const handleClickEditProfile = () => {
     navigate("/accounts/edit");
+  };
+
+  const [isLoadingFollow, setIsLoadingFollow] = useState(false);
+  const [isFollowed, setIsFollowed] = useState(false);
+
+  useEffect(() => {
+    if (isEmpty(userPage)) return;
+
+    (async () => {
+      setIsLoadingFollow(true)
+      const res = await follows.checkFollowByUsername(userPage.username);
+      if (res.data.check_username) {
+        setIsFollowed(true)
+      }
+      setIsLoadingFollow(false)
+    })();
+  }, [userPage]);
+
+  const handleClickFollow = async () => {
+    setIsLoadingFollow(true);
+    await follows.createFollow(userPage, userPage.uid);
+    setIsFollowed(true);
+    setIsLoadingFollow(false);
+  };
+
+  const handleClickUnFollow = async () => {
+    console.log("unfollow");
   };
 
   if (isEmpty(userPage) || isLoadingUserPage) {
@@ -257,7 +287,9 @@ function PageUser() {
                 {userPage.uid !== currentUser.uid && (
                   <>
                     <button className="min-w-24 h-8 flex items-center justify-center border rounded">
-                      <span className="text-sm font-semibold px-2">Nhắn tin</span>
+                      <span className="text-sm font-semibold px-2">
+                        Nhắn tin
+                      </span>
                     </button>
                     {false && (
                       <button className="w-24 h-8 flex items-center justify-center border rounded">
@@ -266,11 +298,31 @@ function PageUser() {
                         </div>
                       </button>
                     )}
-                    <button className="w-24 h-8 flex items-center justify-center border rounded bg-[#0095f6] ">
-                      <span className="text-sm font-semibold text-white">
-                        Theo dõi
-                      </span>
-                    </button>
+                    {isLoadingFollow && (
+                      <div className="w-24 h-8 flex items-center justify-center border rounded bg-[#0095f6] ">
+                        <IconSpinner8SpinsWhite className="w-3 h-3 animate-spinner8Spins" />
+                      </div>
+                    )}
+                    {!isLoadingFollow && !isFollowed && (
+                      <button
+                        onClick={handleClickFollow}
+                        className="w-24 h-8 flex items-center justify-center border rounded bg-[#0095f6] "
+                      >
+                        <span className="text-sm font-semibold text-white">
+                          Theo dõi
+                        </span>
+                      </button>
+                    )}
+                    {!isLoadingFollow && isFollowed && (
+                      <button
+                        onClick={handleClickUnFollow}
+                        className="w-24 h-8 flex items-center justify-center border rounded "
+                      >
+                        <span className="text-sm font-semibold">
+                          Đã theo dõi
+                        </span>
+                      </button>
+                    )}
                   </>
                 )}
               </div>

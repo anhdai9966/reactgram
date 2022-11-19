@@ -18,9 +18,9 @@ const follows = {
       throw error;
     }
   },
-  checkSavedForPostId(postId, userId) {
+  checkFollowByUsername(username) {
     try {
-      const url = `/follows/check/${postId}/${userId}`;
+      const url = `/follows/check/${username}`;
       return axiosFirebaseConfig.get(url);
     } catch (error) {
       throw error;

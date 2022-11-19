@@ -21,18 +21,19 @@ function Saved() {
 
   const [postSaved, setPostSaved] = useState([]);
   const [isLoadingPostSaved, setIsLoadingPostSaved] = useState(false);
+  const {currentUser} = useSelector(state => state.user)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
       setIsLoadingPostSaved(true);
-      const res = await saved.getSavedByUsername(username);
+      const res = await saved.getSavedByUserId(currentUser.uid);
       setPostSaved(res.data.data.saved)
     })();
     setIsLoadingPostSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
+  }, [currentUser]);
 
   const handleClickPostDetail = (postId) => {
     dispatch(setIsShowPostsModal(true));

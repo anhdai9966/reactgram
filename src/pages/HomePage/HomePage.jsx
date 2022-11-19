@@ -13,6 +13,8 @@ import { setShowLoginModal } from "~/app/appSlice";
 import { useEffect } from "react";
 import { fetchAllPosts } from "~/app/postSlice";
 import { isEmpty } from "~/utils";
+import { useState } from "react";
+import { users } from "~/services";
 
 // const posts = [
 //   {
@@ -116,7 +118,7 @@ function HomePage() {
   const isShowBtnModal = isToggleModalDetailThead;
 
   useEffect(() => {
-    dispatch(fetchAllPosts())
+    dispatch(fetchAllPosts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -128,6 +130,15 @@ function HomePage() {
   const handleClickBtnSwitchAccount = () => {
     dispatch(setShowLoginModal(true));
   };
+
+  const [usersFeeds, setUsersFeeds] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await users.getUsersByFeed();
+      setUsersFeeds(res.data.data.users);
+    })();
+  }, []);
 
   if (isEmpty(currentUser)) {
     return (
@@ -157,20 +168,22 @@ function HomePage() {
           transition={{ duration: 0.3 }}
           className="w-full sm:w-[470px]"
         >
-          <div className="flex justify-center mb-4">
-            <div className="w-full">
-              <div className="w-full bg-white rounded-lg border overflow-hidden py-4 pl-4 flex gap-3 items-center">
-                <div className="flex flex-col gap-2 items-center w-16">
-                  <div className="inline-block rounded-full w-14 h-14 overflow-hidden">
-                    <img src={images.avatar2} alt="avatar" />
+          {false && (
+            <div className="flex justify-center mb-4">
+              <div className="w-full">
+                <div className="w-full bg-white rounded-lg border overflow-hidden py-4 pl-4 flex gap-3 items-center">
+                  <div className="flex flex-col gap-2 items-center w-16">
+                    <div className="inline-block rounded-full w-14 h-14 overflow-hidden">
+                      <img src={images.avatar2} alt="avatar" />
+                    </div>
+                    <p className=" w-16 text-[12px] text-truncate text-gray-500">
+                      andiez.namtruong
+                    </p>
                   </div>
-                  <p className=" w-16 text-[12px] text-truncate text-gray-500">
-                    andiez.namtruong
-                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="flex justify-center">
             <div className="flex flex-col gap-4 w-full sm:w-[470px] mx-auto">
@@ -217,7 +230,10 @@ function HomePage() {
                     )}
                   </div>
                 </Link>
-                <Link to={`/@${currentUser.username}`} className="text-sm font-semibold">
+                <Link
+                  to={`/@${currentUser.username}`}
+                  className="text-sm font-semibold"
+                >
                   {currentUser.username}
                 </Link>
               </div>
@@ -239,26 +255,43 @@ function HomePage() {
                 </Link>
               </div>
               <ul className="py-2">
-                <li className="pl-4 py-2 flex justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full overflow-hidden">
-                      <Link to="/@:_ann3112_">
-                        <img src={images.avatar2} alt="avatar" />
-                      </Link>
+                {usersFeeds.map((user) => (
+                  <li key={user.id} className="pl-4 py-2 flex justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full overflow-hidden">
+                        {!!user.profile_pic_url && (
+                          <Link to={`/@${user.username}`}>
+                            <img
+                              src={user.profile_pic_url}
+                              alt={user.username}
+                            />
+                          </Link>
+                        )}
+                        {!user.profile_pic_url && (
+                          <Link to={`/@${user.username}`}>
+                            <IconProfile />
+                          </Link>
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <Link
+                          to={`/@${user.username}`}
+                          className="font-semibold"
+                        >
+                          {user.username}
+                        </Link>
+                        {false && (
+                          <p className="text-xs text-[#8c8c8c] font-light">
+                            Phổ biến
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <Link to="/@:_ann3112_" className="font-semibold">
-                        _ann3112_
-                      </Link>
-                      <p className="text-xs text-[#8c8c8c] font-light">
-                        Phổ biến
-                      </p>
-                    </div>
-                  </div>
-                  <button className="text-xs text-[#0095f6] relative px-4 py-2 hover:bg-black/[3%] rounded-md">
-                    Theo dõi
-                  </button>
-                </li>
+                    <button className="text-xs text-[#0095f6] relative px-4 py-2 hover:bg-black/[3%] rounded-md">
+                      Theo dõi
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="opacity-60">

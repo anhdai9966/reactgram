@@ -26,6 +26,14 @@ const users = {
       throw error;
     }
   },
+  getUsersByFeed() {
+    try {
+      const url = `/users/feed/user`;
+      return axiosFirebaseConfig.get(url);
+    } catch (error) {
+      throw error;
+    }
+  },
   checkUserById(userId) {
     try {
       const url = `/users/check_id/${userId}`;
@@ -65,10 +73,7 @@ const users = {
         biography: null,
         bio_url: null,
         role: ROLE,
-        gender: {
-          type: 3,
-          custom: "Không muốn tiết lộ",
-        },
+        gender: "Không muốn tiết lộ",
         follow: {
           count: 0,
         },
